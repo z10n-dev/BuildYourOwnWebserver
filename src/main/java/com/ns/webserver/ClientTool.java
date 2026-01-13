@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class ClientTool {
    public static void main(String[] args) {
-       String host = "localhost";
-       int port = 8080;
+       String host = "192.168.0.25";
+       int port = 80;
 
        try (var socket = new Socket(host, port)) {
            var in = new ObjectInputStream(socket.getInputStream());
