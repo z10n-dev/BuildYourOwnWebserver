@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # Wir entfernen hier IMAGE_NAME, da wir es unten dynamisch setzen
 
 jobs:
   build-and-push:
@@ -26,6 +26,11 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      # --- NEUER SCHRITT: Hier passiert die Magie ---
+      - name: Repository-Namen in Kleinbuchstaben umwandeln
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+
       - name: Java App bauen (Maven)
         run: ./mvnw clean package -DskipTests
 
@@ -41,4 +46,5 @@ jobs:
         with:
           context: .
           push: true
+          # Hier nutzen wir nun die kleingeschriebene Variable aus dem Schritt oben
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
