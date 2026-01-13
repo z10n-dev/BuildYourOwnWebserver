@@ -4,12 +4,16 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server1 {
     private final int port;
+    private Map<Integer, String> map;
 
     public Server1(int port) {
         this.port = port;
+        load();
     }
 
     public void startServer() {
@@ -32,14 +36,10 @@ public class Server1 {
                 System.out.println("Connection established with " + socketAddress);
 
                 while(true) {
-                    Object obj = null;
-                    try {
-                        obj = in.readObject();
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                    System.out.println("Received from " + socketAddress + ": " + obj);
-                    out.writeObject("Echo: " + obj);
+                    var id = in.readInt();
+                    var name = map.get(id);
+                    out.writeObject(name);
+                    out.flush();
                 }
             } catch (EOFException ignored) {
 
@@ -50,5 +50,12 @@ public class Server1 {
                 System.out.println("Connection closed with " + socketAddress);
             }
         }
+    }
+
+    private void load() {
+        map = new HashMap<>();
+        map.put(1, "One");
+        map.put(2, "Two");
+        map.put(3, "Three");
     }
 }
