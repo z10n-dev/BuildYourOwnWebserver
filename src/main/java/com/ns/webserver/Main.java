@@ -2,8 +2,13 @@ package com.ns.webserver;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Test 1");
-        System.out.println("Test 2");
-        System.out.println("Test 3");
+        while(true){
+            System.out.println("Hello, World!");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }
