@@ -37,8 +37,11 @@ public class Server1 {
 
                 while(true) {
                     var id = in.readInt();
+                    System.out.println("Received ID: " + id + " from " + socketAddress);
+                    System.out.println("Looking up name for ID: " + id);
                     var name = map.get(id);
                     out.writeObject(name);
+                    System.out.println("Sending name for ID: " + id + " to " + socketAddress);
                     out.flush();
                 }
             } catch (EOFException ignored) {
