@@ -5,7 +5,7 @@ FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 # Kopiere dein kompiliertes Jar (Name anpassen!)
-COPY target/meine-app.jar app.jar
+COPY target/webserver-1.0-SNAPSHOT.jar app.jar
 
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
