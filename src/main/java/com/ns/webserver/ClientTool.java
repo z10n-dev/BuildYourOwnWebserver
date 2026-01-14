@@ -31,11 +31,7 @@ public class ClientTool {
                 String name = (String) in.readObject();
                 System.out.println("Name: " + name);
            }
-       } catch (UnknownHostException e) {
-           throw new RuntimeException(e);
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       } catch (ClassNotFoundException e) {
+       } catch (IOException | ClassNotFoundException e) {
            throw new RuntimeException(e);
        }
    }
