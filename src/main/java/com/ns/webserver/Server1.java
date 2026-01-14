@@ -34,17 +34,18 @@ public class Server1 {
                 System.out.println("Connection established with " + socketAddress);
 
                 out.write("HTTP/1.1 200 OK\r\n".getBytes(StandardCharsets.UTF_8));
-                out.write("Content-Type: text/plain; charset=utf-8\r\n".getBytes(StandardCharsets.UTF_8));
+                out.write("Content-Type: text/html; charset=utf-8\r\n".getBytes(StandardCharsets.UTF_8));
                 out.write("Connection: close\r\n\r\n".getBytes(StandardCharsets.UTF_8));
                 out.flush();
 
+                // Read and echo HTTP request
                 var n = 0;
                 var length = 0;
                 String line;
 
                 while (true) {
                     line = in.readLine();
-                    out.write((++n + "\t" + line + "\r\n").getBytes(StandardCharsets.UTF_8));
+                    System.out.println(line);
 
                     if (line == null || line.isEmpty()) break;
 
@@ -59,6 +60,10 @@ public class Server1 {
                     if (c == -1) break;
                     out.write(c);
                 }
+                out.flush();
+
+                out.write('\t');
+                out.write("<h1>Hello World!</h1>".getBytes(StandardCharsets.UTF_8));
                 out.flush();
             } catch (EOFException ignored) {
             } catch (IOException e) {
