@@ -31,8 +31,8 @@ public class Server1 {
             SocketAddress socketAddress = null;
 
             try (Socket socket = serverSocket.accept()) {
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                var out = new BufferedOutputStream(socket.getOutputStream());
+                var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 socketAddress = socket.getRemoteSocketAddress();
                 System.out.println("Connection established with " + socketAddress);
 
