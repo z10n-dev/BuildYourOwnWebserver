@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,14 +36,27 @@ public class Server1 {
                 socketAddress = socket.getRemoteSocketAddress();
                 System.out.println("Connection established with " + socketAddress);
 
-                while(true) {
-                    var id = in.readInt();
-                    System.out.println("Received ID: " + id + " from " + socketAddress);
-                    System.out.println("Looking up name for ID: " + id);
-                    var name = map.get(id);
-                    out.writeObject(name);
-                    System.out.println("Sending name for ID: " + id + " to " + socketAddress);
-                    out.flush();
+                out.write("HTTP/1.1 200 OK\r\n".getBytes());
+                out.write("Content-Type: text/plain\r\n\r\n".getBytes());
+
+                int n = 0;
+                int length = 0;
+                String line = "";
+
+                while(true){
+                    line = in.readLine();
+                    out.write((++n + "\t" + line + "\n").getBytes());
+
+                    if(line == null || line.length() == 0)break;
+
+                    if (line.startsWith("Content-Length: ")) {
+                        length = Integer.parseInt(line.substring(line.indexOf(':') + 1).trim());
+                    }
+                }
+
+                out.write('\t');
+                for (int i = 0; i < length; i++) {
+                    out.write( (char) in.read());
                 }
             } catch (EOFException ignored) {
 
