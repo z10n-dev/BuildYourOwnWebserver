@@ -47,6 +47,8 @@ public class HelloWorldServer extends AbstractHandler {
             out.write('\t');
             out.write("<h1>Hello World!</h1>".getBytes(StandardCharsets.UTF_8));
             out.flush();
-        } catch (Exception e){}
+        } catch (Exception e){
+            System.err.println("HelloWorldServer Error: " + e.getMessage());
+        }
     }
 }
