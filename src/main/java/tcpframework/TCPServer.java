@@ -14,13 +14,13 @@ public class TCPServer extends Thread {
     public TCPServer(int port, Class<?> handlerClass) throws Exception{
         this.handler = (AbstractHandler) handlerClass.getDeclaredConstructor().newInstance();
         this.serverSocket = new ServerSocket(port);
-        this.pool = Executors.newCachedThreadPool();
+        this.pool = Executors.newVirtualThreadPerTaskExecutor();
     }
 
     public TCPServer(int port, AbstractHandler handlerObject) throws Exception{
         this.handler = handlerObject;
         this.serverSocket = new ServerSocket(port);
-        this.pool = Executors.newCachedThreadPool();
+        this.pool = Executors.newVirtualThreadPerTaskExecutor();
     }
 
     public void run(){
