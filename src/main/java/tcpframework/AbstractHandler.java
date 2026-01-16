@@ -5,18 +5,17 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 public abstract class AbstractHandler {
-    public void handle (final Socket socket, ExecutorService pool) {
+    public final void handle (Socket socket, ExecutorService pool) {
         pool.execute(() -> {
-            var socketAdress = socket.getRemoteSocketAddress();
-            System.out.println("Verbindung zu " + socketAdress + " hergestellt.");
-            runTask(socket);
-
-            try {
-                socket.close();
-            } catch (IOException ignored){
-            }
+           try(socket) {
+               var socketAddress = socket.getRemoteSocketAddress();
+               System.out.println("Connection from " + socketAddress);
+               runTask(socket);
+           } catch (Exception e) {
+                System.err.println("Handler Error: " + e.getMessage());
+           }
         });
     }
 
-    public abstract void runTask(Socket socket);
+    protected abstract void runTask(Socket socket) throws IOException;
 }

@@ -1,5 +1,7 @@
 package tcpframework;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
@@ -10,12 +12,6 @@ public class TCPServer extends Thread {
     private final AbstractHandler handler;
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
-
-    public TCPServer(int port, Class<?> handlerClass) throws Exception{
-        this.handler = (AbstractHandler) handlerClass.getDeclaredConstructor().newInstance();
-        this.serverSocket = new ServerSocket(port);
-        this.pool = Executors.newVirtualThreadPerTaskExecutor();
-    }
 
     public TCPServer(int port, AbstractHandler handlerObject) throws Exception{
         this.handler = handlerObject;

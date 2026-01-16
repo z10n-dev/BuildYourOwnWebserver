@@ -4,8 +4,8 @@ import tcpframework.TCPServer;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        HelloWorldServer helloWorldServer = new HelloWorldServer();
-        TCPServer server = new TCPServer(8080, helloWorldServer);
+        HTTP1Handler serverHandler = new HTTP1Handler();
+        TCPServer server = new TCPServer(8080, serverHandler);
         server.start();
     }
 }
