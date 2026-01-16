@@ -1,0 +1,50 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  # Wir entfernen hier IMAGE_NAME, da wir es unten dynamisch setzen
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Java JDK 25 aufsetzen
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # --- NEUER SCHRITT: Hier passiert die Magie ---
+      - name: Repository-Namen in Kleinbuchstaben umwandeln
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+
+      - name: Java App bauen (Maven)
+        run: ./mvnw clean package -DskipTests
+
+      - name: Login bei Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build und Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Hier nutzen wir nun die kleingeschriebene Variable aus dem Schritt oben
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
