@@ -8,27 +8,52 @@ The Features are listed under the [Issues Tab](https://github.com/90S31D0N/Build
 
 ```mermaid
 classDiagram
-    class WebServer {
-        +start()
-        +stop()
-        +handleRequest(request)
-    }
-    class RequestParser {
-        +parse(request)
-    }
-    class Router {
-        +route(request)
-    }
-    class ResponseBuilder {
-        +buildResponse(data)
-    }
-    class MetricsStreamer {
-        +streamMetrics(metrics)
+    class HTTP1Handler{
+        +runTask(Socket)
     }
 
-    WebServer --> RequestParser : uses
-    WebServer --> Router : uses
-    WebServer --> ResponseBuilder : uses
-    WebServer --> MetricsStreamer : uses
+    class AbstractHandler{
+        +  handle (Socket, Executor Serivice)
+        + abstract runTask(Socket)
+    }
+
+    class TCPServer{
+        - int port
+        - AbstractHandler handler
+        + run()
+        + stopServer()
+    }
+
+    class Main{
+        + main()
+    }
+
+    class HTTPErrorHandler{
+        + static sendBadRequest(socket)
+        + static sendNotFound(socket)
+        + static sendInternalError(socket)
+        + static sendMethodeNotAllowed(socket)
+        + static sendNotImplemented(socket)
+    }
+
+    class HTTPRequestHandler{
+        + HTTPRequest parseHTTPRequest(socket)
+    }
+
+    class HTTPRequest {
+        - HTTPMethode methode
+        - String path
+        - String httpVersion
+        - Map<String, String[]> headers
+        - byte[] bodyBytes
+        + toString()
+    }
+
+    HTTP1Handler --> AbstractHandler : extends
+    HTTP1Handler --> HTTPErrorHandler : uses
+    HTTP1Handler --> HTTPRequestHandler : uses
+    HTTPRequestHandler --> HTTPRequest : creates
+    Main --> HTTP1Handler : instantiates
+    Main --> TCPServer : instantiates
 ```
 
