@@ -55,5 +55,6 @@ classDiagram
     HTTPRequestHandler --> HTTPRequest : creates
     Main --> HTTP1Handler : instantiates
     Main --> TCPServer : instantiates
+    TCPServer --> HTTP1Handler : uses
 ```
 
