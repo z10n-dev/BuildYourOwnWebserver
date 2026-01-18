@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # Wir entfernen hier IMAGE_NAME, da wir es unten dynamisch setzen
 
 jobs:
   build-and-push:
@@ -26,7 +25,27 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      # --- NEUER SCHRITT: Hier passiert die Magie ---
+      - name: Node.js aufsetzen
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Frontend Dependencies installieren
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Next.js Static Website generieren
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Static Files nach Java Resources kopieren
+        run: |
+          mkdir -p src/main/resources/static
+          rm -rf src/main/resources/static/*
+          cp -r frontend/out/* src/main/resources/static/
+
       - name: Repository-Namen in Kleinbuchstaben umwandeln
         run: |
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
@@ -46,5 +65,4 @@ jobs:
         with:
           context: .
           push: true
-          # Hier nutzen wir nun die kleingeschriebene Variable aus dem Schritt oben
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

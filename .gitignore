@@ -1,4 +1,12 @@
-target/
+# ==================== Java/Maven ====================
+/backend/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -7,11 +15,77 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
 
-# Eclipse m2e generated files
-# Eclipse Core
+# ==================== IDE ====================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
 .project
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
+.settings/
+.metadata/
+bin/
+tmp/
 
+# VS Code
 .vscode/
+
+# ==================== Frontend/Node.js ====================
+# Dependencies
+**/node_modules/
+/frontend/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+/frontend/coverage
+*.lcov
+
+# Next.js
+/frontend/.next/
+/frontend/out/
+
+# Production builds
+/frontend/build
+/frontend/dist
+
+# ==================== Environment & Config ====================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==================== Logs ====================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs/
+
+# ==================== OS ====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# ==================== Misc ====================
+*.pem
+.vercel
+*.tsbuildinfo
+next-env.d.ts
