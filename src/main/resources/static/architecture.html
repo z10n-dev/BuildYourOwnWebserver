@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glass Box - Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo">Glass Box</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="architecture.html" class="active">Architecture</a></li>
+                <li><a href="roadmap.html">Roadmap</a></li>
+                <li><a href="dashboard.html">Live Dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <h2>System Architecture</h2>
+    <p>The backend is built in Java using raw Sockets to ensure total visibility into the data flow.</p>
+
+    <div class="card">
+        <h3>1. Core Server (`TCPServer`)</h3>
+        <p>The entry point of the application.</p>
+        <ul class="task-list">
+            <li><strong>Role:</strong> Initializes the server on a specific `port` and listens for incoming connections.</li>
+            <li><strong>Key Methods:</strong> `run()` loops infinitely to accept sockets, while `stopServer()` handles graceful shutdowns.</li>
+            <li><strong>Relationships:</strong> Instantiates `HTTP1Handler` to process connected sockets.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>2. Request Handling Strategy</h3>
+        <p>We use an abstract strategy pattern to decouple the socket logic from the protocol logic.</p>
+        <ul>
+            <li><strong>AbstractHandler:</strong> Defines the blueprint for handling sockets and managing the `ExecutorService` (Thread Pool).</li>
+            <li><strong>HTTP1Handler:</strong> The concrete implementation for HTTP/1.1. It orchestrates the parsing and routing.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>3. Data Processing (`HTTPRequest`)</h3>
+        <p>Raw bytes from the socket are converted into structured Java objects.</p>
+        <ul>
+            <li><strong>HTTPRequestHandler:</strong> Reads the input stream and parses the Method (GET/POST), Path, and Headers.</li>
+            <li><strong>HTTPRequest Object:</strong> Stores the parsed state:
+                <code>Method</code>, <code>Path</code>, <code>Headers (Map)</code>, and <code>Body (byte[])</code>.
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>4. Error Management (`HTTPErrorHandler`)</h3>
+        <p>Static utility class to generate standard HTTP error responses.</p>
+        <p><em>Supports:</em> 400 Bad Request, 404 Not Found, 500 Internal Error, 501 Not Implemented.</p>
+    </div>
+</main>
+
+</body>
+</html>

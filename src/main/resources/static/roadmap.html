@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glass Box - Roadmap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo">Glass Box</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="roadmap.html" class="active">Roadmap</a></li>
+                <li><a href="dashboard.html">Live Dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <h2>Project Milestones</h2>
+
+    <div class="card">
+        <div class="milestone-header">
+            <h3>Phase 1: HTTP/1.1 Server</h3>
+            <span>75% Complete</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+        <ul class="task-list">
+            <li class="done">TCP Server (Server Sockets)</li>
+            <li class="done">Request Parser (Extract Method)</li>
+            <li class="done">Static File Serving</li>
+            <li>Error Handling & Edge Cases</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="milestone-header">
+            <h3>Phase 2: SSE Endpoint</h3>
+            <span>0% Complete</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+        <ul class="task-list">
+            <li>Shared State Object (Stores Server State)</li>
+            <li>Implement SSE Endpoint</li>
+            <li>Hooks to Request Parser</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="milestone-header">
+            <h3>Phase 3: Dashboard Frontend</h3>
+            <span>0% Complete</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+        <ul class="task-list">
+            <li>Simple Website Setup</li>
+            <li>Visual 1: Map with all Connections</li>
+            <li>Visual 2: Pipeline (Request, Parsing, Processing)</li>
+            <li>Visual 3: Thread Pool Status</li>
+            <li>Visual 4: Speedometer (Req/Sec)</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="milestone-header">
+            <h3>Phase 4: Stresstesting</h3>
+            <span>0% Complete</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+        <ul class="task-list">
+            <li>Handle `connection: keep-alive`</li>
+            <li>Make Server Robust</li>
+            <li>Benchmark Performance</li>
+        </ul>
+    </div>
+
+</main>
+
+</body>
+</html>

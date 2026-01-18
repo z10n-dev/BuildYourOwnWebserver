@@ -3,46 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Website</title>
+    <title>Glass Box - Educational Server</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        alert("This Webseite is AI generated. It will be replaced with real content soon.");
+    </script>
 </head>
 <body>
 
 <header>
     <div class="container">
-        <h1 class="logo">MyWebsite</h1>
+        <a href="index.html" class="logo">Glass Box</a>
         <nav>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="roadmap.html">Roadmap</a></li>
+                <li><a href="dashboard.html">Live Dashboard</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
-<section id="home" class="hero">
+<section class="hero">
     <div class="container">
-        <h2>Welcome to my corner of the web.</h2>
-        <p>I build things, write code, and explore the internet.</p>
-        <a href="#contact" class="btn">Get in Touch</a>
+        <h2>See the invisible side of HTTP.</h2>
+        <p>
+            Most servers hide their complexity. Glass Box exposes it.
+            Watch requests flow through parsing, routing, and threading in real-time.
+        </p>
+        <a href="dashboard.html" class="cta-button">Open Live Dashboard</a>
+
+        <img src="https://mdn.github.io/shared-assets/images/diagrams/http/overview/fetching-a-page.svg" alt="Server Preview" style="width:100%; border-radius:8px; margin-top:40px; border:1px solid #30363d;">
     </div>
 </section>
 
-<section id="about" class="content-section">
+<section class="features-section">
     <div class="container">
-        <h3>About Me</h3>
-        <p>
-            This is a simple paragraph about who you are. You can edit this text
-            in your HTML file. This layout is responsive, meaning it will look
-            good on mobile phones and desktop computers.
-        </p>
+        <h3>Why this project?</h3>
+        <p style="color: #8b949e;">Built strictly with Java Standard Library. No Spring, No Netty, No Magic.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🔍</span>
+                <h4>Transparent Logic</h4>
+                <p>We don't hide the complexity. From raw byte parsing to thread management, every step is visualized.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h4>Multithreaded</h4>
+                <p>Implements a custom <code>ExecutorService</code> strategy to handle concurrent connections efficiently.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h4>Real-Time SSE</h4>
+                <p>Uses Server-Sent Events to push internal server state to the frontend dashboard instantly.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🛠️</span>
+                <h4>Zero Dependencies</h4>
+                <p>Built entirely from scratch using `java.net.Socket` and `java.io` to understand the fundamentals.</p>
+            </div>
+        </div>
     </div>
 </section>
 
 <footer>
     <div class="container">
-        <p>&copy; 2024 My Simple Website. All rights reserved.</p>
+        <p>&copy; 2026 Glass Box Project. Built for education.</p>
     </div>
 </footer>
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glass Box - Live Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="logo">Glass Box</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="roadmap.html">Roadmap</a></li>
+                <li><a href="dashboard.html" class="active">Live Dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <h2>Server Internals (Live)</h2>
+    <p>Waiting for SSE Connection...</p>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Connection Map</h3>
+            <div class="metric-box">
+                [Visual 1 Placeholder]<br>
+                Active Socket Connections
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Request Pipeline</h3>
+            <div class="metric-box">
+                [Visual 2 Placeholder]<br>
+                Parsing -> Processing -> Sending
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Thread Pool</h3>
+            <div class="metric-box">
+                [Visual 3 Placeholder]<br>
+                Active Threads / Idle Threads
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Throughput</h3>
+            <div class="metric-box">
+                [Visual 4 Placeholder]<br>
+                Speedometer (Req/s)
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

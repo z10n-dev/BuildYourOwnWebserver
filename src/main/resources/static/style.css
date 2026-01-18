@@ -1,99 +1,100 @@
-/* General Setup */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --bg-color: #0d1117; /* GitHub Dark Dimmed */
+    --card-bg: #161b22;
+    --text-main: #c9d1d9;
+    --accent: #58a6ff;
+    --border: #30363d;
+    --success: #238636;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-    max-width: 1100px;
+/* Layout */
+.container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+header { border-bottom: 1px solid var(--border); padding: 1rem 0; margin-bottom: 2rem; }
+header .container { display: flex; justify-content: space-between; align-items: center; }
+
+/* Navigation */
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--accent); text-decoration: none; }
+nav ul { list-style: none; display: flex; gap: 20px; padding: 0; }
+nav a { color: var(--text-main); text-decoration: none; font-weight: 600; }
+nav a:hover, nav a.active { color: var(--accent); }
+
+/* Components */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 20px; }
+h2, h3 { color: #fff; margin-top: 0; }
+
+/* Roadmap Specifics */
+.milestone-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.progress-bar { background: #30363d; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
+.progress-fill { height: 100%; background: var(--success); }
+.task-list { list-style: none; padding: 0; }
+.task-list li { padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.task-list li::before { content: "☐ "; font-weight: bold; color: var(--text-main); }
+.task-list li.done::before { content: "☑ "; color: var(--success); }
+
+/* Dashboard Grid */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.metric-box { text-align: center; padding: 40px; border: 2px dashed var(--border); color: #8b949e; }
+
+/* --- Add to the bottom of style.css --- */
+
+/* Hero Section Enhancements */
+.hero {
+    text-align: center;
+    padding: 80px 0;
+    background: linear-gradient(180deg, var(--bg-color) 0%, #1c2128 100%);
 }
 
-/* Header & Navigation */
-header {
-    background: #333;
-    color: #fff;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: 3px solid #0066cc;
-}
+.hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+.hero p { font-size: 1.2rem; color: #8b949e; max-width: 600px; margin: 0 auto 30px auto; }
 
-header .logo {
-    float: left;
-    font-size: 24px;
-    text-transform: uppercase;
-}
-
-header nav {
-    float: right;
-    margin-top: 5px;
-}
-
-header nav ul li {
-    display: inline;
-    padding: 0 20px;
-}
-
-header nav a {
-    color: #fff;
+.cta-button {
+    display: inline-block;
+    background-color: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
+    transition: background 0.2s;
 }
+.cta-button:hover { background-color: #2da44e; }
 
-header nav a:hover {
-    color: #0066cc;
+/* Features Grid */
+.features-section { padding: 60px 0; }
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
 }
-
-/* Hero Section */
-.hero {
-    background: #fff;
-    text-align: center;
-    padding: 100px 0;
-    margin-bottom: 20px;
+.feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 30px;
+    border-radius: 6px;
+    transition: transform 0.2s;
 }
+.feature-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+.feature-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
 
-.hero h2 {
-    font-size: 50px;
-    margin-bottom: 20px;
-}
-
-.btn {
-    display: inline-block;
-    background: #0066cc;
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-
-.btn:hover {
-    background: #004488;
-}
-
-/* Content Section */
-.content-section {
-    padding: 20px 0;
-    background: #fff;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Footer */
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
+/* Server Visual/Image Area */
+.server-visual {
+    margin-top: 40px;
     padding: 20px;
-    margin-top: 20px;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    color: var(--success);
+    text-align: left;
+    overflow-x: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
