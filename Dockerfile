@@ -5,10 +5,10 @@ FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 # Kopiere dein kompiliertes Jar (Name anpassen!)
-COPY target/webserver-1.0-SNAPSHOT.jar app.jar
+COPY /backend/target/webserver-1.0-SNAPSHOT.jar app.jar
 
 # Copy resources separately from your project
-COPY src/main/resources/static /app/static
+COPY /backend/src/main/resources/static /app/static
 
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
