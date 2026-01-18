@@ -7,6 +7,9 @@ WORKDIR /app
 # Kopiere dein kompiliertes Jar (Name anpassen!)
 COPY target/webserver-1.0-SNAPSHOT.jar app.jar
 
+# Copy resources separately from your project
+COPY src/main/resources/static /app/static
+
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
 

@@ -13,7 +13,7 @@ public class HTTP1Handler extends AbstractHandler {
         try {
             HTTPRequest request = HTTPRequestHandler.parseHTTPRequest(socket);
             System.out.println(request);
-            HTTPResponseHandler responseHandler = new HTTPResponseHandler("/static");
+            HTTPResponseHandler responseHandler = new HTTPResponseHandler("/app/static");
             responseHandler.handleRequest(request, socket);
         } catch (Exception e) {
             System.out.println(e.getMessage());
