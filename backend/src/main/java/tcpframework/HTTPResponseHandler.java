@@ -37,13 +37,24 @@ public class HTTPResponseHandler {
         String path = request.getPath();
         Path filePath = Paths.get(rootPath, path);
 
-        if(Files.isDirectory(filePath)){
+        boolean originalIsDirectory = Files.isDirectory(filePath);
+        if (originalIsDirectory) {
             filePath = filePath.resolve("index.html");
         }
 
         if (!Files.exists(filePath) || Files.isDirectory(filePath)) {
-            HTTPErrorHandler.sendNotFound(socket);
-            return;
+            if (!originalIsDirectory) {
+                Path htmlFallback = Paths.get(filePath.toString() + ".html");
+                if (Files.exists(htmlFallback) && !Files.isDirectory(htmlFallback)) {
+                    filePath = htmlFallback;
+                } else {
+                    HTTPErrorHandler.sendNotFound(socket);
+                    return;
+                }
+            } else {
+                HTTPErrorHandler.sendNotFound(socket);
+                return;
+            }
         }
 
         try {
