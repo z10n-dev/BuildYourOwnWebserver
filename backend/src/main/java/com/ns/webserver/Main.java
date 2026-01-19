@@ -4,7 +4,7 @@ import tcpframework.TCPServer;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        HTTP1Handler serverHandler = new HTTP1Handler();
+        HTTP1Handler serverHandler = new HTTP1Handler(args[0]);
         TCPServer server = new TCPServer(8080, serverHandler);
         server.start();
     }
