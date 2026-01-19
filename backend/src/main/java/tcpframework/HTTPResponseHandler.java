@@ -37,6 +37,10 @@ public class HTTPResponseHandler {
         String path = request.getPath();
         Path filePath = Paths.get(rootPath, path);
 
+        if(Files.isDirectory(filePath)){
+            filePath = filePath.resolve("index.html");
+        }
+
         if (!Files.exists(filePath) || Files.isDirectory(filePath)) {
             HTTPErrorHandler.sendNotFound(socket);
             return;
