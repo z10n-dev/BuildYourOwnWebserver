@@ -1,5 +1,6 @@
 package tcpframework;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -42,7 +43,7 @@ public class HTTPResponseHandler {
         }
 
         try {
-            String body = Files.readString(filePath, StandardCharsets.UTF_8);
+            byte[] body = Files.readAllBytes(filePath);
             String mimeType = Files.probeContentType(filePath);
             sendResponse(socket, mimeType, body);
         } catch (IOException e) {
@@ -56,15 +57,19 @@ public class HTTPResponseHandler {
         HTTPErrorHandler.sendNotImplemented(socket);
     }
 
-    private void sendResponse(Socket socket, String mimeType, String body) {
+    private void sendResponse(Socket socket, String mimeType, byte[] body) {
         try {
             OutputStream out = socket.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
             writer.write(String.format("HTTP/1.1 %d %s\r\n", 200, "OK"));
             writer.write(String.format("Content-Type: %s; charset=utf-8\r\n", mimeType));
+            writer.write(String.format("Content-Length: %d\r\n", body != null ? body.length : 0));
             writer.write("Connection: close\r\n\r\n");
-            writer.write(body);
             writer.flush();
+            if (body != null && body.length > 0) {
+                out.write(body);
+                out.flush();
+            }
         } catch (IOException e) {
             System.err.println("Failed to send response: " + e.getMessage());
         }
