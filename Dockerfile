@@ -14,4 +14,4 @@ COPY /backend/src/main/resources/static /app/static
 EXPOSE 8080
 
 # Startbefehl
-ENTRYPOINT ["java", "-jar", "app.jar", "/app/static"]
+ENTRYPOINT ["java", "-jar", "app.jar", "/app/static", "8080"]
