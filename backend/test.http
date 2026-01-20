@@ -1,0 +1,12 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### GET request to local Server
+GET localhost:8080/ HTTP/1.1
+Host: localhost:8080
+User-Agent: HTTP Client IntelliJ IDEA
+Accept: */*
+
+
+

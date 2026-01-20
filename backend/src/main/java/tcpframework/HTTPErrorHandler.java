@@ -1,5 +1,10 @@
 package tcpframework;
 
+import tcpframework.exceptions.BadRequestException;
+import tcpframework.exceptions.InternalServerErrorException;
+import tcpframework.exceptions.NotFoundException;
+import tcpframework.exceptions.NotImplementedException;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -35,5 +40,31 @@ public class HTTPErrorHandler {
 
     public static void sendNotImplemented(Socket socket) {
         sendError(socket, 501, "Not Implemented");
+    }
+
+    public static void handleException(Socket socket, Exception e) {
+        switch (e) {
+            case BadRequestException ignored:
+                sendBadRequest(socket);
+                System.err.println("Bad Request Exception: " + e.getMessage());
+                break;
+            case InternalServerErrorException ignored:
+                sendInternalError(socket);
+                System.err.println("Internal Server Error: " + e.getMessage());
+                break;
+            case NotFoundException ignored:
+                sendNotFound(socket);
+                System.err.println("Not Found: " + e.getMessage());
+                break;
+            case NotImplementedException ignored:
+                sendNotImplemented(socket);
+                System.err.println("Not Implemented: " + e.getMessage());
+                break;
+            default:
+                sendInternalError(socket);
+                System.err.println("Unhandled Exception: " + e.getMessage());
+                break;
+        }
+        e.printStackTrace();
     }
 }

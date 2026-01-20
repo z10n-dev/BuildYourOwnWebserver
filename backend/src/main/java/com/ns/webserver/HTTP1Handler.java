@@ -1,29 +1,26 @@
 package com.ns.webserver;
 
-import tcpframework.AbstractHandler;
-import tcpframework.HTTPRequest;
-import tcpframework.HTTPRequestHandler;
-import tcpframework.HTTPResponseHandler;
+import tcpframework.*;
 
 import java.net.Socket;
 
 public class HTTP1Handler extends AbstractHandler {
-    private final String rootPath;
+    private final RouterConfig router;
 
-    public HTTP1Handler(String rootPath) {
-        this.rootPath = rootPath;
+    public HTTP1Handler(RouterConfig router) {
+        this.router = router;
     }
 
     @Override
     protected void runTask(Socket socket) {
         try {
-            HTTPRequest request = HTTPRequestHandler.parseHTTPRequest(socket);
+            HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
             System.out.println(request);
-            HTTPResponseHandler responseHandlerLocal = new HTTPResponseHandler(rootPath);
-//            HTTPResponseHandler responseHandlerLocal = new HTTPResponseHandler("backend/src/main/resources/static");
-            responseHandlerLocal.handleRequest(request, socket);
+
+            RequestHandler handler = router.findHandler(request);
+            handler.handle(request, socket);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            HTTPErrorHandler.handleException(socket,e);
         }
     }
 }
