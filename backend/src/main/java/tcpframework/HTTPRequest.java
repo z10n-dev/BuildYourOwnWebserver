@@ -30,7 +30,23 @@ public class HTTPRequest {
     }
 
     public String getPath() {
+        int queryIndex = path.indexOf('?');
+        if (queryIndex != -1) {
+            return path.substring(0, queryIndex);
+        }
         return path;
+    }
+
+    public String getFullPath() {
+        return path;
+    }
+
+    public String getQueryString() {
+        int queryIndex = path.indexOf('?');
+        if (queryIndex != -1 && queryIndex + 1 < path.length()) {
+            return path.substring(queryIndex + 1);
+        }
+        return "";
     }
 
     public String getHttpVersion() {

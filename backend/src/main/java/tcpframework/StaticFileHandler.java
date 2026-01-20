@@ -40,10 +40,6 @@ public class StaticFileHandler extends RequestHandler {
 
     private void handleGetRequest(HTTPRequest request, Socket socket) throws Exception {
         String path = request.getPath();
-        int queryIndex = path.indexOf('?');
-        if (queryIndex != -1) {
-            path = path.substring(0, queryIndex);
-        }
         Path filePath = Paths.get(rootPath, path);
 
         if(Files.isDirectory(filePath)){
