@@ -101,7 +101,6 @@ public class HTTPRequestParser {
         String line = in.readLine();
         while (line != null && !line.isEmpty()) {
             String[] parts = line.split(": ");
-            System.out.println("Header Line Parts: " + String.join("|", parts));
 
             if (parts.length == 0 || parts[0].isEmpty()) {
                 throw new BadRequestException("Invalid HTTP Header: " + line);
