@@ -1,6 +1,7 @@
 package tcpframework;
 
 import tcpframework.exceptions.InternalServerErrorException;
+import tcpframework.exceptions.NotImplementedException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,7 +10,43 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public abstract class RequestHandler {
-    public abstract void handle(HTTPRequest request, Socket socket) throws Exception;
+    public void handle(HTTPRequest request, Socket socket) throws Exception {
+        switch (request.getMethod()){
+            case GET:
+                handleGetRequest(request, socket);
+                break;
+            case POST:
+                handlePostRequest(request, socket);
+                break;
+            case PUT:
+                handlePutRequest(request, socket);
+                break;
+            case DELETE:
+                handleDeleteRequest(request, socket);
+                break;
+            default:
+                HTTPErrorHandler.sendNotImplemented(socket);
+                break;
+        }
+    }
+
+    protected void handleGetRequest(HTTPRequest request, Socket socket) throws Exception{
+        throw new NotImplementedException("GET method not implemented for this handler");
+    };
+
+    protected void handlePostRequest(HTTPRequest request, Socket socket) throws Exception{
+        throw new NotImplementedException("POST method not implemented for this handler");
+    };
+
+    protected void handlePutRequest(HTTPRequest request, Socket socket) throws Exception {
+        throw new NotImplementedException("PUT method not implemented for this handler");
+    };
+
+    protected void handleDeleteRequest(HTTPRequest request, Socket socket) throws Exception {
+        throw new NotImplementedException("DELETE method not implemented for this handler");
+    };
+
+
 
     protected void sendResponse(Socket socket, String mimeType, byte[] body) throws InternalServerErrorException {
         try {

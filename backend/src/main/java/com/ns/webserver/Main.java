@@ -1,6 +1,7 @@
 package com.ns.webserver;
 
 import com.ns.webserver.handlers.HelloWorldHandler;
+import com.ns.webserver.handlers.ToDoHandler;
 import tcpframework.RouterConfig;
 import tcpframework.TCPServer;
 
@@ -11,6 +12,7 @@ public class Main {
 
         RouterConfig router = new RouterConfig(args[0]);
         router.register("/hello", new HelloWorldHandler());
+        router.register("/api/todos", new ToDoHandler("/api/todos"));
 
         HTTP1Handler serverHandler = new HTTP1Handler(router);
 

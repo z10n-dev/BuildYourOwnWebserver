@@ -57,8 +57,12 @@ public class HTTPRequest {
         return headers;
     }
 
-    public InputStream getBody() {
-        return new ByteArrayInputStream(bodyBytes);
+    public String getBody() {
+        return new String(bodyBytes);
+    }
+
+    public String getRequestHeadString(){
+        return method.toString()+" "+path;
     }
 
     @Override
@@ -76,6 +80,8 @@ public class HTTPRequest {
             sb.append(String.join(", ", entry.getValue()));
             sb.append("\n");
         }
+        sb.append("\n");
+        sb.append(new String(bodyBytes));
         return sb.toString();
     }
 

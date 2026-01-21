@@ -8,5 +8,17 @@ Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
 
+### POST request with JSON body
+POST localhost:8080/api/todos HTTP/1.1
+Host: localhost:8080
+User-Agent: HTTP Client IntelliJ IDEA
+Accept: */*
+
+{
+  "title": "Test4",
+  "completed": false,
+  "id": "test4"
+}
+
 
 

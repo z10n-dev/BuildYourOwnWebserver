@@ -15,7 +15,7 @@ public class HTTP1Handler extends AbstractHandler {
     protected void runTask(Socket socket) {
         try {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
-//            System.out.println(request);
+            System.out.println(request);
 
             RequestHandler handler = router.findHandler(request);
             handler.handle(request, socket);

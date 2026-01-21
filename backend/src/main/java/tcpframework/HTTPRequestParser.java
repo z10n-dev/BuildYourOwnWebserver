@@ -15,6 +15,9 @@ public class HTTPRequestParser {
         String header = getHTTPHeader(rawIn);
         BufferedReader in = new BufferedReader(new StringReader(header));
         String line = in.readLine();
+        if (line == null || line.isEmpty()) {
+            throw new BadRequestException("Empty HTTP Request");
+        }
         String[] requestLineParts = line.split(" ");
 
         HTTPMethode methode = extractMethode(requestLineParts);

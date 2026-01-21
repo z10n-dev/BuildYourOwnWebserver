@@ -2,6 +2,7 @@ package tcpframework;
 
 import tcpframework.exceptions.InternalServerErrorException;
 import tcpframework.exceptions.NotFoundException;
+import tcpframework.exceptions.NotImplementedException;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,28 +18,8 @@ public class StaticFileHandler extends RequestHandler {
         this.rootPath = rootPath;
     }
 
-    public void handle(HTTPRequest request, Socket socket) throws Exception {
-
-        switch (request.getMethod()){
-            case GET:
-                handleGetRequest(request, socket);
-                break;
-            case POST:
-                handlePostRequest(request, socket);
-                break;
-            case PUT:
-//                handlePutRequest(request, socket);
-                break;
-            case DELETE:
-//                handleDeleteRequest(request, socket);
-                break;
-            default:
-                HTTPErrorHandler.sendNotImplemented(socket);
-                break;
-        }
-    }
-
-    private void handleGetRequest(HTTPRequest request, Socket socket) throws Exception {
+    @Override
+    protected void handleGetRequest(HTTPRequest request, Socket socket) throws Exception {
         String path = request.getPath();
         Path filePath = Paths.get(rootPath, path);
 
@@ -61,7 +42,18 @@ public class StaticFileHandler extends RequestHandler {
 
     }
 
-    private void handlePostRequest(HTTPRequest request, Socket socket) {
-        HTTPErrorHandler.sendNotImplemented(socket);
+    @Override
+    protected void handlePostRequest(HTTPRequest request, Socket socket) throws Exception{
+        throw new NotImplementedException("POST method not implemented for StaticFileHandler");
+    }
+
+    @Override
+    protected void handlePutRequest(HTTPRequest request, Socket socket) throws Exception {
+        throw new NotImplementedException("PUT method not implemented for StaticFileHandler");
+    }
+
+    @Override
+    protected void handleDeleteRequest(HTTPRequest request, Socket socket) throws Exception {
+        throw new NotImplementedException("DELETE method not implemented for StaticFileHandler");
     }
 }

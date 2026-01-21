@@ -25,12 +25,14 @@ export default function Navbar() {
             <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
               Architecture
             </Link>
+            <Link href="/todo" className='text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition'>Todo</Link>
             <Link href="/roadmap" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
               Roadmap
             </Link>
             <Link href="/live-dashboard" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
               Live Dashboard
             </Link>
+          
           </div>
 
           {/* Mobile Menu Button */}
