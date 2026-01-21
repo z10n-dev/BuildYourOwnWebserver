@@ -12,7 +12,9 @@ public class Main {
 
         RouterConfig router = new RouterConfig(args[0]);
         router.register("/hello", new HelloWorldHandler());
-        router.register("/api/todos", new ToDoHandler("/api/todos"));
+        ToDoHandler toDoHandler = new ToDoHandler("/api/todos");
+        router.register("/api/todos", toDoHandler);
+        router.register("/api/todos/*", toDoHandler);
 
         HTTP1Handler serverHandler = new HTTP1Handler(router);
 

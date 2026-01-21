@@ -26,11 +26,8 @@ export default function Navbar() {
               Architecture
             </Link>
             <Link href="/todo" className='text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition'>Todo</Link>
-            <Link href="/roadmap" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-              Roadmap
-            </Link>
             <Link href="/live-dashboard" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-              Live Dashboard
+              Dashboard
             </Link>
           
           </div>
@@ -64,11 +61,11 @@ export default function Navbar() {
             <Link href="/about" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
               About
             </Link>
-            <Link href="/services" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
-              Services
+            <Link href="/todo" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
+              Todo
             </Link>
-            <Link href="/contact" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
-              Contact
+            <Link href="/live-dashboard" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
+              Dashboard
             </Link>
           </div>
         </div>

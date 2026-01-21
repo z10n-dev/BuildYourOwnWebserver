@@ -1,8 +1,64 @@
+"use client";
+import { MermaidDiagram } from "@lightenna/react-mermaid-diagram"
+
 export default function About() {
+  const diagramText = `classDiagram
+    class HTTP1Handler{
+        +runTask(Socket)
+    }
+
+    class AbstractHandler{
+        +  handle (Socket, Executor Serivice)
+        + abstract runTask(Socket)
+    }
+
+    class TCPServer{
+        - int port
+        - AbstractHandler handler
+        + run()
+        + stopServer()
+    }
+
+    class Main{
+        + main()
+    }
+
+    class HTTPErrorHandler{
+        + static sendBadRequest(socket)
+        + static sendNotFound(socket)
+        + static sendInternalError(socket)
+        + static sendMethodeNotAllowed(socket)
+        + static sendNotImplemented(socket)
+    }
+
+    class HTTPRequestHandler{
+        + HTTPRequest parseHTTPRequest(socket)
+    }
+
+    class HTTPRequest {
+        - HTTPMethode methode
+        - String path
+        - String httpVersion
+        - Map<String, String[]> headers
+        - byte[] bodyBytes
+        + toString()
+    }
+
+    HTTP1Handler --> AbstractHandler : extends
+    HTTP1Handler --> HTTPErrorHandler : uses
+    HTTP1Handler --> HTTPRequestHandler : uses
+    HTTPRequestHandler --> HTTPRequest : creates
+    Main --> HTTP1Handler : instantiates
+    Main --> TCPServer : instantiates
+    TCPServer --> HTTP1Handler : uses`;
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black">
       <div className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">About Glass Box</h1>
+
+        <MermaidDiagram>
+          {diagramText}
+        </MermaidDiagram>
         
         <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-md p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Our Mission</h2>

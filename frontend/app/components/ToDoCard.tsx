@@ -45,7 +45,7 @@ export default function ToDoCard({
                     type="text"
                     value={editedTitle}
                     onChange={(e) => setEditedTitle(e.target.value)}
-                    className="flex-1 px-2 py-1 text-lg border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="flex-1 px-2 py-1 text-lg border border-blue-500 text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
                     autoFocus
                 />
             ) : (
