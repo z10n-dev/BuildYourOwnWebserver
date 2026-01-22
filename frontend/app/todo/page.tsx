@@ -16,7 +16,7 @@ export default function page() {
     const [newTodoTitle, setNewTodoTitle] = useState('');
 
     useEffect(() => {
-        fetch('http://192.168.0.25/api/todos')
+        fetch('/api/todos')
             .then((res) => {
                 return res.arrayBuffer().then((buffer) => {
                     const decoder = new TextDecoder();
@@ -28,7 +28,7 @@ export default function page() {
     }, [refetch])
 
     const updateTodo = (item: item) => {
-        fetch(`http://192.168.0.25/api/todos/${item.id}`, {
+        fetch(`/api/todos/${item.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export default function page() {
     };
 
     const deleteTodo = (id: string) => {
-        fetch(`http://192.168.0.25/api/todos/${id}`, {
+        fetch(`/api/todos/${id}`, {
             method: 'DELETE',
         }).then(() => {
             setRefetch(!refetch);
@@ -49,7 +49,7 @@ export default function page() {
 
     const addTodo = () => {
         if (newTodoTitle.trim()) {
-            fetch('http://192.168.0.25/api/todos', {
+            fetch('/api/todos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
