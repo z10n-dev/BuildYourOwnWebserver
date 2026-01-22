@@ -65,7 +65,7 @@ export default function page() {
 
   return (
     <div className='flex flex-col items-center mt-10 min-h-screen'>
-        <h1 className='text-3xl font-bold mb-4'>Todo List</h1>
+        <h1 className='text-3xl font-bold mb-4'>Todo List  V2</h1>
         <div className='w-full max-w-md mb-6'>
             <div className='flex gap-2'>
                 <input
