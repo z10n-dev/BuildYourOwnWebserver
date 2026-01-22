@@ -1,9 +1,7 @@
 package com.ns.webserver.handlers;
 
-import tcpframework.AbstractHandler;
-import tcpframework.HTTPRequest;
-import tcpframework.HTTPRequestParser;
-import tcpframework.RequestHandler;
+import org.json.HTTP;
+import tcpframework.*;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -15,7 +13,10 @@ public class HelloWorldHandler extends RequestHandler {
     @Override
     public void handle(HTTPRequest request, Socket socket) {
         try {
-            sendResponse(socket, "text/html", "<h1>Hello, World!</h1>".getBytes(StandardCharsets.UTF_8));
+            HTTPResponse response = new HTTPResponse(200, "OK");
+            response.setBody("<h1>Hello, World!</h1>".getBytes(StandardCharsets.UTF_8), "text/html; charset=UTF-8");
+            response.send(socket);
+
         } catch (Exception e){
             System.err.println("HelloWorldHandler Error: " + e.getMessage());
         }

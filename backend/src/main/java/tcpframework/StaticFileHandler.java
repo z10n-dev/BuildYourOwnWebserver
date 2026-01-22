@@ -34,7 +34,11 @@ public class StaticFileHandler extends RequestHandler {
         try {
             byte[] body = Files.readAllBytes(filePath);
             String mimeType = Files.probeContentType(filePath);
-            sendResponse(socket, mimeType, body);
+
+            HTTPResponse response = new HTTPResponse(200, "OK");
+            response.setBody(body, mimeType != null ? mimeType : "application/octet-stream");
+            response.send(socket);
+
         } catch (IOException e) {
             throw new InternalServerErrorException("Failed to read file: " + filePath);
         }

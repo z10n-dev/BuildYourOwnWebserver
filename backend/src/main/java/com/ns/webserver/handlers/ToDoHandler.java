@@ -23,6 +23,8 @@ public class ToDoHandler extends RequestHandler {
         routes.put("POST /api/todos", this::addTodo);
         routes.put("PUT /api/todos/:id", this::updateTodo);
         routes.put("DELETE /api/todos/:id", this::deleteTodo);
+        routes.put("OPTIONS /api/todos", this::handleOptions);
+        routes.put("OPTIONS /api/todos/:id", this::handleOptions);
     }
 
 
@@ -40,6 +42,15 @@ public class ToDoHandler extends RequestHandler {
 
     }
 
+    private void handleOptions(Socket socket, HTTPRequest request) throws Exception {
+        HTTPResponse response = new HTTPResponse(204, "No Content");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setHeader("Access-Control-Max-Age", "86400");
+        response.send(socket);
+    }
+
     private void sendAllToDos(Socket socket, HTTPRequest request) throws Exception {
         JSONArray jsonArray = new JSONArray();
         for (ToDo todo : toDoStore.values()) {
@@ -51,7 +62,10 @@ public class ToDoHandler extends RequestHandler {
             jsonArray.put(json);
         }
 
-        sendResponse(socket, "application/json", jsonArray.toString().getBytes());
+        HTTPResponse response = new HTTPResponse(200, "OK");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setBody(jsonArray.toString().getBytes(), "application/json");
+        response.send(socket);
     }
 
     private void addTodo(Socket socket, HTTPRequest request) throws Exception {
@@ -67,7 +81,9 @@ public class ToDoHandler extends RequestHandler {
 
         System.out.println("Added ToDo: " + newToDo.getId());
 
-        sendResponse(socket, "text/plain", "ToDo created".getBytes());
+        HTTPResponse response = new HTTPResponse(200, "OK");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.send(socket);
     }
 
     private void updateTodo(Socket socket, HTTPRequest request) throws Exception {
@@ -80,7 +96,10 @@ public class ToDoHandler extends RequestHandler {
             existingToDo.setTitle(json.getString("title"));
             existingToDo.setCompleted(json.getBoolean("completed"));
             System.out.println("ToDo after update: " + toDoStore.get(id).getTitle() + ", Completed: " + toDoStore.get(id).isCompleted());
-            sendResponse(socket, "text/plain", "ToDo updated".getBytes());
+
+            HTTPResponse response = new HTTPResponse(200, "OK");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.send(socket);
         } else {
             throw new NotFoundException("ToDo not found: " + id);
         }
@@ -91,7 +110,11 @@ public class ToDoHandler extends RequestHandler {
         ToDo removedToDo = toDoStore.remove(id);
         if (removedToDo != null) {
             System.out.println("Deleted ToDo: " + removedToDo.getId());
-            sendResponse(socket, "text/plain", "ToDo deleted".getBytes());
+
+            HTTPResponse response = new HTTPResponse(200, "OK");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.send(socket);
+
         } else {
             throw new NotFoundException("ToDo not found: " + id);
         }
