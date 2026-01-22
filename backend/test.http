@@ -50,5 +50,16 @@ Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
 
+### POST TODO to server
+POST 192.168.0.25:80/api/todos HTTP/1.1
+Host: localhost:8080
+User-Agent: HTTP Client IntelliJ IDEA
+Accept: */*
+
+{
+  "title": "Test2",
+  "completed": false,
+  "id": "2"
+}
 
 
