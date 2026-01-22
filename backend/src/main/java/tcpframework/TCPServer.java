@@ -1,25 +1,40 @@
 package tcpframework;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * A multithreaded TCP server that listens for incoming client connections
+ * and delegates request handling to an HTTPHandler.
+ * This server uses virtual threads for efficient concurrency.
+ */
 public class TCPServer extends Thread {
 
-    private final AbstractHandler handler;
+    private final HTTPHandler handler;
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
 
-    public TCPServer(int port, AbstractHandler handlerObject) throws Exception{
+
+    /**
+     * Constructs a TCPServer instance with the specified port and HTTPHandler.
+     *
+     * @param port          The port number on which the server will listen for connections.
+     * @param handlerObject The HTTPHandler instance to handle client requests.
+     * @throws Exception If an error occurs while initializing the server socket.
+     */
+    public TCPServer(int port, HTTPHandler handlerObject) throws Exception{
         this.handler = handlerObject;
         this.serverSocket = new ServerSocket(port);
         this.pool = Executors.newVirtualThreadPerTaskExecutor();
     }
 
+    /**
+     * Starts the server and listens for incoming client connections.
+     * Each connection is handled in a separate virtual thread.
+     */
     public void run(){
         System.out.println("TCPServer started on port " + serverSocket.getLocalPort());
         try{
@@ -35,6 +50,9 @@ public class TCPServer extends Thread {
 
     }
 
+    /**
+     * Stops the server by closing the server socket and shutting down the thread pool.
+     */
     public void stopServer() {
         try {
             serverSocket.close();

@@ -1,33 +1,12 @@
 package com.ns.webserver.models;
 
-public class ToDo {
-    private final String id;
-    private String title;
-    private boolean completed;
+/**
+ * Represents a ToDo item with an ID, title, and completion status.
+ *
+ * @param id        The unique identifier for the ToDo item.
+ * @param title     The title or description of the ToDo item.
+ * @param completed A boolean indicating whether the ToDo item is completed.
+ */
+public record ToDo(String id, String title, boolean completed) {
 
-    public ToDo(String id, String title, boolean completed) {
-        this.id = id;
-        this.title = title;
-        this.completed = completed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
 }

@@ -2,6 +2,7 @@ package com.ns.webserver;
 
 import com.ns.webserver.handlers.HelloWorldHandler;
 import com.ns.webserver.handlers.ToDoHandler;
+import tcpframework.HTTPHandler;
 import tcpframework.RouterConfig;
 import tcpframework.TCPServer;
 
@@ -12,11 +13,13 @@ public class Main {
 
         RouterConfig router = new RouterConfig(args[0]);
         router.register("/hello", new HelloWorldHandler());
-        ToDoHandler toDoHandler = new ToDoHandler("/api/todos");
+        ToDoHandler toDoHandler = new ToDoHandler();
+
+        // TODO: Make sub-path registrations in the same way as other handlers
         router.register("/api/todos", toDoHandler);
         router.register("/api/todos/*", toDoHandler);
 
-        HTTP1Handler serverHandler = new HTTP1Handler(router);
+        HTTPHandler serverHandler = new HTTPHandler(router);
 
         try {
             TCPServer server = new TCPServer(Integer.parseInt(args[1]), serverHandler);

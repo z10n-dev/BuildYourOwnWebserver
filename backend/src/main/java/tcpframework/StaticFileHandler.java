@@ -10,14 +10,35 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * A request handler for serving static files from a specified root directory.
+ * This class extends the RequestHandler and provides an implementation for handling
+ * HTTP GET requests to serve files. Other HTTP methods are not supported.
+ */
 public class StaticFileHandler extends RequestHandler {
 
     private final String rootPath;
 
+    /**
+     * Constructs a StaticFileHandler with the specified root directory.
+     *
+     * @param rootPath The root directory from which files will be served.
+     */
     public StaticFileHandler(String rootPath) {
         this.rootPath = rootPath;
     }
 
+    /**
+     * Handles HTTP GET requests by serving static files from the root directory.
+     * If the requested path is a directory, it attempts to serve an "index.html" file.
+     * If the file does not exist or is a directory, a NotFoundException is thrown.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws NotFoundException If the file is not found or is a directory.
+     * @throws InternalServerErrorException If an error occurs while reading the file.
+     * @throws Exception If any other error occurs during request handling.
+     */
     @Override
     protected void handleGetRequest(HTTPRequest request, Socket socket) throws Exception {
         String path = request.getPath();
@@ -44,20 +65,5 @@ public class StaticFileHandler extends RequestHandler {
         }
 
 
-    }
-
-    @Override
-    protected void handlePostRequest(HTTPRequest request, Socket socket) throws Exception{
-        throw new NotImplementedException("POST method not implemented for StaticFileHandler");
-    }
-
-    @Override
-    protected void handlePutRequest(HTTPRequest request, Socket socket) throws Exception {
-        throw new NotImplementedException("PUT method not implemented for StaticFileHandler");
-    }
-
-    @Override
-    protected void handleDeleteRequest(HTTPRequest request, Socket socket) throws Exception {
-        throw new NotImplementedException("DELETE method not implemented for StaticFileHandler");
     }
 }

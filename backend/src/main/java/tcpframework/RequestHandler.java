@@ -1,15 +1,23 @@
 package tcpframework;
 
-import tcpframework.exceptions.InternalServerErrorException;
 import tcpframework.exceptions.NotImplementedException;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
+/**
+ * Abstract base class for handling HTTP requests.
+ * This class uses the Template Method design pattern to define the structure of request handling.
+ * Subclasses can override specific HTTP method handlers (GET, POST, PUT, DELETE) as needed.
+ */
 public abstract class RequestHandler {
+
+    /**
+     * Handles an HTTP request by routing it to the appropriate method based on the HTTP method.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws Exception If an error occurs during request handling.
+     */
     public void handle(HTTPRequest request, Socket socket) throws Exception {
         switch (request.getMethod()){
             case GET:
@@ -30,39 +38,51 @@ public abstract class RequestHandler {
         }
     }
 
+    /**
+     * Handles HTTP GET requests.
+     * Subclasses should override this method to provide specific GET request handling logic.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws Exception If the method is not implemented or an error occurs.
+     */
     protected void handleGetRequest(HTTPRequest request, Socket socket) throws Exception{
         throw new NotImplementedException("GET method not implemented for this handler");
     };
 
+    /**
+     * Handles HTTP POST requests.
+     * Subclasses should override this method to provide specific POST request handling logic.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws Exception If the method is not implemented or an error occurs.
+     */
     protected void handlePostRequest(HTTPRequest request, Socket socket) throws Exception{
         throw new NotImplementedException("POST method not implemented for this handler");
     };
 
+    /**
+     * Handles HTTP PUT requests.
+     * Subclasses should override this method to provide specific PUT request handling logic.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws Exception If the method is not implemented or an error occurs.
+     */
     protected void handlePutRequest(HTTPRequest request, Socket socket) throws Exception {
         throw new NotImplementedException("PUT method not implemented for this handler");
     };
 
+    /**
+     * Handles HTTP DELETE requests.
+     * Subclasses should override this method to provide specific DELETE request handling logic.
+     *
+     * @param request The HTTP request to handle.
+     * @param socket  The socket connection to the client.
+     * @throws Exception If the method is not implemented or an error occurs.
+     */
     protected void handleDeleteRequest(HTTPRequest request, Socket socket) throws Exception {
         throw new NotImplementedException("DELETE method not implemented for this handler");
     };
-
-
-
-    protected void sendResponse(Socket socket, String mimeType, byte[] body) throws InternalServerErrorException {
-        try {
-            OutputStream out = socket.getOutputStream();
-            OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
-            writer.write(String.format("HTTP/1.1 %d %s\r\n", 200, "OK"));
-            writer.write(String.format("Content-Type: %s; charset=utf-8\r\n", mimeType));
-            writer.write(String.format("Content-Length: %d\r\n", body != null ? body.length : 0));
-            writer.write("Connection: close\r\n\r\n");
-            writer.flush();
-            if (body != null && body.length > 0) {
-                out.write(body);
-                out.flush();
-            }
-        } catch (IOException e) {
-            throw new InternalServerErrorException("Failed to send response" );
-        }
-    }
 }

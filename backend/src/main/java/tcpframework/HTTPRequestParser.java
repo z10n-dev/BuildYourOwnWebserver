@@ -54,7 +54,7 @@ public class HTTPRequestParser {
     }
 
     private static InputStream bodyStream(InputStream in, int contentLength) {
-        return new FixedLenghtInputStream(in, contentLength);
+        return new FixedLengthInputStream(in, contentLength);
     }
 
     private static HTTPMethode extractMethode(String[] line) throws Exception {

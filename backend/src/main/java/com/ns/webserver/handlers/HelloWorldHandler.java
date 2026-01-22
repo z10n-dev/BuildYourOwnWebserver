@@ -27,20 +27,5 @@ public class HelloWorldHandler extends RequestHandler {
 
     }
 
-    @Override
-    protected void handlePostRequest(HTTPRequest request, Socket socket) throws Exception {
-
-    }
-
-    @Override
-    protected void handlePutRequest(HTTPRequest request, Socket socket) throws Exception {
-
-    }
-
-    @Override
-    protected void handleDeleteRequest(HTTPRequest request, Socket socket) throws Exception {
-
-    }
-
 
 }
