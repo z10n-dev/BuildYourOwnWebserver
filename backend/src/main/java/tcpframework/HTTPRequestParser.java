@@ -26,7 +26,7 @@ public class HTTPRequestParser {
 
         LinkedHashMap<String, String[]> headers = extractHttpHeaders(in);
 
-        return new HTTPRequest(methode, path, httpVersion, headers, bodyStream(rawIn, Integer.parseInt(headers.getOrDefault("Content-Length", new String[]{"0"})[0])));
+        return new HTTPRequest(methode, path, httpVersion, headers, bodyStream(rawIn, Integer.parseInt(headers.getOrDefault("content-length", new String[]{"0"})[0])));
     }
 
     private static String getHTTPHeader(InputStream in) throws IOException {
@@ -109,7 +109,7 @@ public class HTTPRequestParser {
                 throw new BadRequestException("Invalid HTTP Header: " + line);
             }
 
-            String key = parts[0];
+            String key = parts[0].toLowerCase();
             String[] values;
 
             if (parts.length > 1 && !parts[1].isEmpty()) {

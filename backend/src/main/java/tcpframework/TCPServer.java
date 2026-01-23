@@ -25,10 +25,10 @@ public class TCPServer extends Thread {
      * @param handlerObject The HTTPHandler instance to handle client requests.
      * @throws Exception If an error occurs while initializing the server socket.
      */
-    public TCPServer(int port, HTTPHandler handlerObject) throws Exception{
+    public TCPServer(int port, HTTPHandler handlerObject, ExecutorService pool) throws Exception{
         this.handler = handlerObject;
         this.serverSocket = new ServerSocket(port);
-        this.pool = Executors.newVirtualThreadPerTaskExecutor();
+        this.pool = pool;
     }
 
     /**

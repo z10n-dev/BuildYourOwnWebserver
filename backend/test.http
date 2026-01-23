@@ -1,15 +1,15 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+@host = localhost
+@port = 8080
+@baseUrl = http://{{host}}:{{port}}
 
 ### GET request to local Server
-GET localhost:8080/ HTTP/1.1
+GET {{baseUrl}}/ HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
 
 ### POST Todo 1
-POST localhost:8080/api/todos HTTP/1.1
+POST {{baseUrl}}/api/todos HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
@@ -21,7 +21,7 @@ Accept: */*
 }
 
 ### POST Todo 2
-POST localhost:8080/api/todos HTTP/1.1
+POST {{baseUrl}}/api/todos HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
@@ -33,7 +33,7 @@ Accept: */*
 }
 
 ### PUT request to update a Todo
-PUT localhost:8080/api/todos/1 HTTP/1.1
+PUT {{baseUrl}}/api/todos/1 HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
@@ -45,13 +45,13 @@ Accept: */*
 }
 
 ### GET all Todos
-GET localhost:8080/api/todos HTTP/1.1
+GET {{baseUrl}}/api/todos HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
 
 ### POST TODO to server
-POST 192.168.0.25:80/api/todos HTTP/1.1
+POST {{baseUrl}}/api/todos HTTP/1.1
 Host: localhost:8080
 User-Agent: HTTP Client IntelliJ IDEA
 Accept: */*
@@ -61,5 +61,19 @@ Accept: */*
   "completed": false,
   "id": "2"
 }
+
+### DELETE a Todo
+DELETE {{baseUrl}}/api/todos/2 HTTP/1.1
+Host: localhost:8080
+User-Agent: HTTP Client IntelliJ IDEA
+Accept: */*
+
+### Test SSE Endpoint
+GET {{baseUrl}}/api/sse HTTP/1.1
+Host: localhost:8080
+User-Agent: HTTP Client IntelliJ IDEA
+Accept: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
 
 

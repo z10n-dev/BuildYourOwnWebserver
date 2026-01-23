@@ -8,6 +8,7 @@ import tcpframework.exceptions.NotFoundException;
 
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * The ToDoHandler class is responsible for handling HTTP requests related to
@@ -15,9 +16,8 @@ import java.util.HashMap;
  * It extends the RequestHandler class and provides route-specific logic.
  */
 public class ToDoHandler extends RequestHandler {
-    private final HashMap<String, ToDo> toDoStore;
+    private final HashMap<UUID, ToDo> toDoStore;
     HashMap<String, RouteCommand> routes = new HashMap<>();
-    private int idCounter = 1;
 
     /**
      * Constructor for ToDoHandler.
@@ -64,7 +64,7 @@ public class ToDoHandler extends RequestHandler {
     private void handleOptions(Socket socket, HTTPRequest request) throws Exception {
         HTTPResponse response = new HTTPResponse(204, "No Content");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", request.getPath().endsWith("/todos") ? "GET, POST, OPTIONS" : "PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Max-Age", "86400");
         response.send(socket);
@@ -81,7 +81,7 @@ public class ToDoHandler extends RequestHandler {
         JSONArray jsonArray = new JSONArray();
         for (ToDo todo : toDoStore.values()) {
             JSONObject json = new JSONObject();
-            json.put("id", todo.id());
+            json.put("id", todo.id().toString());
             json.put("title", todo.title());
             json.put("completed", todo.completed());
             jsonArray.put(json);
@@ -104,14 +104,20 @@ public class ToDoHandler extends RequestHandler {
 
         JSONObject json = new JSONObject(request.getBody());
 
-        ToDo newToDo = new ToDo(String.valueOf(idCounter), json.getString("title"), json.getBoolean("completed"));
+        ToDo newToDo = new ToDo(UUID.randomUUID(), json.getString("title"), json.getBoolean("completed"));
         toDoStore.put(newToDo.id(), newToDo);
-        idCounter++;
 
-        System.out.println("Added ToDo: " + newToDo.id());
+        System.out.println("Added ToDo: " + newToDo.id().toString());
 
-        HTTPResponse response = new HTTPResponse(200, "OK");
+        HTTPResponse response = new HTTPResponse(201, "Created");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Location", "/api/todos/" + newToDo.id().toString());
+        response.setBody(new JSONObject()
+                .put("id", newToDo.id().toString())
+                .put("title", newToDo.title())
+                .put("completed", newToDo.completed())
+                .toString()
+                .getBytes(), "application/json");
         response.send(socket);
     }
 
@@ -125,7 +131,7 @@ public class ToDoHandler extends RequestHandler {
     private void updateTodo(Socket socket, HTTPRequest request) throws Exception {
         String id = request.getRequestHead().substring(request.getRequestHead().lastIndexOf("/") + 1);
         JSONObject json = new JSONObject(request.getBody());
-        ToDo existingToDo = toDoStore.get(id);
+        ToDo existingToDo = toDoStore.get(UUID.fromString(id));
         System.out.print(existingToDo);
         if (existingToDo != null) {
             ToDo newToDo = new ToDo(existingToDo.id(), json.getString("title"), json.getBoolean("completed"));
@@ -148,7 +154,7 @@ public class ToDoHandler extends RequestHandler {
      */
     private void deleteTodo(Socket socket, HTTPRequest request) throws Exception {
         String id = request.getRequestHead().substring(request.getRequestHead().lastIndexOf("/") + 1);
-        ToDo removedToDo = toDoStore.remove(id);
+        ToDo removedToDo = toDoStore.remove(UUID.fromString(id));
         if (removedToDo != null) {
 
             HTTPResponse response = new HTTPResponse(200, "OK");
