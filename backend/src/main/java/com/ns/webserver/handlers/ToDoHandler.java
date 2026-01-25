@@ -108,6 +108,7 @@ public class ToDoHandler extends RequestHandler {
         toDoStore.put(newToDo.id(), newToDo);
 
         System.out.println("Added ToDo: " + newToDo.id().toString());
+        ServerLogger.getInstance().newLog("Added ToDo: " + newToDo.id().toString());
 
         HTTPResponse response = new HTTPResponse(201, "Created");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -137,6 +138,8 @@ public class ToDoHandler extends RequestHandler {
             ToDo newToDo = new ToDo(existingToDo.id(), json.getString("title"), json.getBoolean("completed"));
             toDoStore.put(existingToDo.id(), newToDo);
 
+            ServerLogger.getInstance().newLog("Updated ToDo: " + newToDo.id().toString());
+
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.send(socket);
@@ -157,6 +160,8 @@ public class ToDoHandler extends RequestHandler {
         ToDo removedToDo = toDoStore.remove(UUID.fromString(id));
         if (removedToDo != null) {
 
+            ServerLogger.getInstance().newLog("Deleted ToDo: " + removedToDo.id().toString());
+
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.send(socket);
@@ -164,5 +169,6 @@ public class ToDoHandler extends RequestHandler {
         } else {
             throw new NotFoundException("ToDo not found: " + id);
         }
+
     }
 }

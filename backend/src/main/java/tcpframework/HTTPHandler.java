@@ -1,5 +1,7 @@
 package tcpframework;
 
+import com.ns.webserver.handlers.ServerLogger;
+
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
@@ -29,9 +31,11 @@ public class HTTPHandler {
             try (socket) {
                 var socketAddress = socket.getRemoteSocketAddress();
                 System.out.println("Connection from " + socketAddress);
+//                ServerLogger.getInstance().newLog(String.format("Connection from " + socketAddress));
                 runTask(socket);
             } catch (Exception e) {
                 System.err.println("Handler Error: " + e.getMessage());
+                ServerLogger.getInstance().newLog(e.getMessage());
             }
         });
     }
@@ -45,6 +49,9 @@ public class HTTPHandler {
     protected void runTask(Socket socket) throws Exception {
         try {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
+            if (!request.getPath().startsWith("/_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
+                ServerLogger.getInstance().newLog("REQUEST: " + request.getMethod() + " " + request.getPath());
+            }
 
             RequestHandler handler = router.findHandler(request);
             handler.handle(request, socket);

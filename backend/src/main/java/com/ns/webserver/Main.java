@@ -1,9 +1,6 @@
 package com.ns.webserver;
 
-import com.ns.webserver.handlers.HelloWorldHandler;
-import com.ns.webserver.handlers.SSEHandler;
-import com.ns.webserver.handlers.ServerLogger;
-import com.ns.webserver.handlers.ToDoHandler;
+import com.ns.webserver.handlers.*;
 import tcpframework.HTTPHandler;
 import tcpframework.RouterConfig;
 import tcpframework.TCPServer;
@@ -20,15 +17,19 @@ public class Main {
         router.register("/hello", new HelloWorldHandler());
         ToDoHandler toDoHandler = new ToDoHandler();
         SSEHandler sseHandler = new SSEHandler();
+        ClientCounterHandler clientCounterHandler = new ClientCounterHandler();
 
         // TODO: Make sub-path registrations in the same way as other handlers
         router.register("/api/todos", toDoHandler);
         router.register("/api/todos/*", toDoHandler);
         router.register("/api/sse", sseHandler);
+        router.register("/api/clients", clientCounterHandler);
+        router.register("/api/active-clients", new ClientCountHandler(clientCounterHandler));
 
         HTTPHandler serverHandler = new HTTPHandler(router);
         ExecutorService executor = Executors.newCachedThreadPool();
-        executor.execute(new ServerLogger(sseHandler));
+        ServerLogger.initialize(sseHandler);
+        executor.execute(ServerLogger.getInstance());
 
         try {
             TCPServer server = new TCPServer(Integer.parseInt(args[1]), serverHandler, executor);
