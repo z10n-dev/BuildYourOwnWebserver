@@ -13,9 +13,8 @@ public interface RouteCommand {
     /**
      * Executes the command for the specified route.
      *
-     * @param socket  The socket connection to the client.
      * @param request The HTTP request to process.
      * @throws Exception If an error occurs during execution.
      */
-    void run(Socket socket, HTTPRequest request) throws Exception;
+    HTTPResponse run(HTTPRequest request) throws Exception;
 }

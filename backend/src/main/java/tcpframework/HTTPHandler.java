@@ -1,6 +1,7 @@
 package tcpframework;
 
 import com.ns.webserver.handlers.ServerLogger;
+import tcpframework.reqeustHandlers.RequestHandler;
 
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -30,7 +31,7 @@ public class HTTPHandler {
         pool.execute(() -> {
             try (socket) {
                 var socketAddress = socket.getRemoteSocketAddress();
-                System.out.println("Connection from " + socketAddress);
+//                System.out.println("Connection from " + socketAddress);
 //                ServerLogger.getInstance().newLog(String.format("Connection from " + socketAddress));
                 runTask(socket);
             } catch (Exception e) {
@@ -49,12 +50,13 @@ public class HTTPHandler {
     protected void runTask(Socket socket) throws Exception {
         try {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
-            if (!request.getPath().startsWith("/_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
+            if (!request.getPath().contains("_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
                 ServerLogger.getInstance().newLog("REQUEST: " + request.getMethod() + " " + request.getPath());
             }
 
             RequestHandler handler = router.findHandler(request);
-            handler.handle(request, socket);
+            HTTPResponse response = handler.handle(request, socket);
+            response.send(socket);
         } catch (Exception e) {
             HTTPErrorHandler.handleException(socket, e);
         }

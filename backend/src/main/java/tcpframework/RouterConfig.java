@@ -1,5 +1,9 @@
 package tcpframework;
 
+import tcpframework.reqeustHandlers.MethodeBasedHandler;
+import tcpframework.reqeustHandlers.RequestHandler;
+import tcpframework.reqeustHandlers.StaticFileHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +14,8 @@ import java.util.Map;
  * HTTP request.
  */
 public class RouterConfig {
-    private final Map<String,RequestHandler> routes = new HashMap<>();
-    private final RequestHandler defaultHandler;
+    private final Map<String, RequestHandler> routes = new HashMap<>();
+    private final MethodeBasedHandler defaultHandler;
 
     /**
      * Constructs a RouterConfig instance with a default static file handler.

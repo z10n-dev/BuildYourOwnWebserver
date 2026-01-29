@@ -3,6 +3,7 @@ package tcpframework;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.net.Socket;
 import java.util.Map;
 
 /**
@@ -14,6 +15,7 @@ public class HTTPRequest {
     private final String httpVersion;
     private final Map<String, String[]> headers;
     private final byte[] bodyBytes;
+    private final Socket socket;
 
     /**
      * Constructs an HTTPRequest object with the specified parameters.
@@ -24,12 +26,13 @@ public class HTTPRequest {
      * @param headers     A map of HTTP headers, where the key is the header name and the value is an array of header values.
      * @param body        The InputStream representing the body of the request.
      */
-    public HTTPRequest(HTTPMethode method, String path, String httpVersion, Map<String, String[]> headers, InputStream body) {
+    public HTTPRequest(Socket socket, HTTPMethode method, String path, String httpVersion, Map<String, String[]> headers, InputStream body) {
         this.method = method;
         this.path = path;
         this.httpVersion = httpVersion;
         this.headers = headers;
         this.bodyBytes = readBody(body);
+        this.socket = socket;
     }
 
     /**
@@ -81,6 +84,10 @@ public class HTTPRequest {
      */
     public String getRequestHead(){
         return method + " " + path;
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
     /**

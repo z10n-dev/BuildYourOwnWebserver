@@ -1,5 +1,8 @@
 package com.ns.webserver.handlers;
 
+import tcpframework.reqeustHandlers.sse.SSEEvent;
+import tcpframework.reqeustHandlers.sse.SSEHandler;
+
 public class ServerLogger extends Thread {
     private static ServerLogger instance;
     private SSEHandler sseHandler;
@@ -25,20 +28,9 @@ public class ServerLogger extends Thread {
     @Override
     public void run() {
         System.out.println("ServerLogger started.");
-//        while (true) {
-//            try {
-//                Thread.sleep(1000);
-//                String logMessage = "Active SSE connections: " + sseHandler.clientCount();
-//                System.out.println(logMessage);
-//                sseHandler.broadcast(logMessage);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//                break;
-//            }
-//        }
     }
 
     public void newLog(String logMessage) {
-        sseHandler.broadcast(logMessage);
+        sseHandler.broadcast(SSEEvent.LOG ,logMessage);
     }
 }

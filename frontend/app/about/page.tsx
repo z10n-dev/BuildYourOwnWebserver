@@ -54,7 +54,7 @@ export default function About() {
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black">
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">About Glass Box</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center">About Glass Box</h1>
 
         <MermaidDiagram>
           {diagramText}

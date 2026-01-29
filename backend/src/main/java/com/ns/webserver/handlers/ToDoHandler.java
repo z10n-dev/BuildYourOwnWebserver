@@ -1,10 +1,13 @@
 package com.ns.webserver.handlers;
 
 import com.ns.webserver.models.ToDo;
+import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import tcpframework.*;
 import tcpframework.exceptions.NotFoundException;
+import tcpframework.reqeustHandlers.MethodeBasedHandler;
+import tcpframework.reqeustHandlers.RouteBasedHandler;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -15,9 +18,9 @@ import java.util.UUID;
  * ToDo operations such as retrieving, adding, updating, and deleting ToDo items.
  * It extends the RequestHandler class and provides route-specific logic.
  */
-public class ToDoHandler extends RequestHandler {
+public class ToDoHandler extends RouteBasedHandler {
     private final HashMap<UUID, ToDo> toDoStore;
-    HashMap<String, RouteCommand> routes = new HashMap<>();
+
 
     /**
      * Constructor for ToDoHandler.
@@ -33,51 +36,28 @@ public class ToDoHandler extends RequestHandler {
         routes.put("OPTIONS /api/todos/:id", this::handleOptions);
     }
 
-
-    /**
-     * Handles incoming HTTP requests by routing them to the appropriate handler method.
-     *
-     * @param request The HTTP request to handle.
-     * @param socket  The socket through which the response will be sent.
-     * @throws Exception If an error occurs during request handling.
-     */
-    @Override
-    public void handle(HTTPRequest request, Socket socket) throws Exception {
-        String normalizedPath = request.getRequestHead().substring(0,request.getRequestHead().lastIndexOf("/"))+"/:id";
-
-        if (!routes.containsKey(request.getRequestHead())){
-            routes.get(normalizedPath).run(socket, request);
-        } else {
-            routes.get(request.getRequestHead()).run(socket, request);
-        }
-
-
-    }
-
     /**
      * Handles HTTP OPTIONS requests by sending a response with allowed methods and headers.
      *
-     * @param socket  The socket through which the response will be sent.
      * @param request The HTTP request.
      * @throws Exception If an error occurs during response creation or sending.
      */
-    private void handleOptions(Socket socket, HTTPRequest request) throws Exception {
+    private HTTPResponse handleOptions(HTTPRequest request) throws Exception {
         HTTPResponse response = new HTTPResponse(204, "No Content");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", request.getPath().endsWith("/todos") ? "GET, POST, OPTIONS" : "PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Max-Age", "86400");
-        response.send(socket);
+        return response;
     }
 
     /**
      * Sends all ToDo items as a JSON array in the HTTP response.
      *
-     * @param socket  The socket through which the response will be sent.
      * @param request The HTTP request.
      * @throws Exception If an error occurs during response creation or sending.
      */
-    private void sendAllToDos(Socket socket, HTTPRequest request) throws Exception {
+    private HTTPResponse sendAllToDos(HTTPRequest request) throws Exception {
         JSONArray jsonArray = new JSONArray();
         for (ToDo todo : toDoStore.values()) {
             JSONObject json = new JSONObject();
@@ -90,17 +70,16 @@ public class ToDoHandler extends RequestHandler {
         HTTPResponse response = new HTTPResponse(200, "OK");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setBody(jsonArray.toString().getBytes(), "application/json");
-        response.send(socket);
+        return response;
     }
 
     /**
      * Adds a new ToDo item to the store and sends a response.
      *
-     * @param socket  The socket through which the response will be sent.
      * @param request The HTTP request containing the ToDo data in the body.
      * @throws Exception If an error occurs during response creation or sending.
      */
-    private void addTodo(Socket socket, HTTPRequest request) throws Exception {
+    private HTTPResponse addTodo(HTTPRequest request) throws Exception {
 
         JSONObject json = new JSONObject(request.getBody());
 
@@ -119,17 +98,16 @@ public class ToDoHandler extends RequestHandler {
                 .put("completed", newToDo.completed())
                 .toString()
                 .getBytes(), "application/json");
-        response.send(socket);
+        return response;
     }
 
     /**
      * Updates an existing ToDo item in the store and sends a response.
      *
-     * @param socket  The socket through which the response will be sent.
      * @param request The HTTP request containing the updated ToDo data in the body.
      * @throws Exception If the ToDo item is not found or an error occurs during response creation or sending.
      */
-    private void updateTodo(Socket socket, HTTPRequest request) throws Exception {
+    private HTTPResponse updateTodo(HTTPRequest request) throws Exception {
         String id = request.getRequestHead().substring(request.getRequestHead().lastIndexOf("/") + 1);
         JSONObject json = new JSONObject(request.getBody());
         ToDo existingToDo = toDoStore.get(UUID.fromString(id));
@@ -142,7 +120,7 @@ public class ToDoHandler extends RequestHandler {
 
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");
-            response.send(socket);
+            return response;
         } else {
             throw new NotFoundException("ToDo not found: " + id);
         }
@@ -151,11 +129,10 @@ public class ToDoHandler extends RequestHandler {
     /**
      * Deletes a ToDo item from the store and sends a response.
      *
-     * @param socket  The socket through which the response will be sent.
      * @param request The HTTP request containing the ID of the ToDo to delete.
      * @throws Exception If the ToDo item is not found or an error occurs during response creation or sending.
      */
-    private void deleteTodo(Socket socket, HTTPRequest request) throws Exception {
+    private HTTPResponse deleteTodo(HTTPRequest request) throws Exception {
         String id = request.getRequestHead().substring(request.getRequestHead().lastIndexOf("/") + 1);
         ToDo removedToDo = toDoStore.remove(UUID.fromString(id));
         if (removedToDo != null) {
@@ -164,11 +141,12 @@ public class ToDoHandler extends RequestHandler {
 
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");
-            response.send(socket);
+            return response;
 
         } else {
             throw new NotFoundException("ToDo not found: " + id);
         }
+
 
     }
 }

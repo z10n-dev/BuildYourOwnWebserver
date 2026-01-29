@@ -17,6 +17,6 @@ export default function Connected() {
           };
         }, []);
   return (
-    <div>Connected</div>
+    <div></div>
   )
 }

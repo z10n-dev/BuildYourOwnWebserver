@@ -4,6 +4,7 @@ import com.ns.webserver.handlers.*;
 import tcpframework.HTTPHandler;
 import tcpframework.RouterConfig;
 import tcpframework.TCPServer;
+import tcpframework.reqeustHandlers.sse.SSEHandler;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,14 +18,11 @@ public class Main {
         router.register("/hello", new HelloWorldHandler());
         ToDoHandler toDoHandler = new ToDoHandler();
         SSEHandler sseHandler = new SSEHandler();
-        ClientCounterHandler clientCounterHandler = new ClientCounterHandler();
 
         // TODO: Make sub-path registrations in the same way as other handlers
         router.register("/api/todos", toDoHandler);
         router.register("/api/todos/*", toDoHandler);
         router.register("/api/sse", sseHandler);
-        router.register("/api/clients", clientCounterHandler);
-        router.register("/api/active-clients", new ClientCountHandler(clientCounterHandler));
 
         HTTPHandler serverHandler = new HTTPHandler(router);
         ExecutorService executor = Executors.newCachedThreadPool();

@@ -1,44 +1,53 @@
-package com.ns.webserver.handlers;
+package tcpframework.reqeustHandlers.sse;
 
 import tcpframework.HTTPRequest;
 import tcpframework.HTTPResponse;
-import tcpframework.RequestHandler;
+import tcpframework.reqeustHandlers.RequestHandler;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientCounterHandler extends RequestHandler {
+public class SSEHandler extends RequestHandler {
     private final Set<Socket> sockets = ConcurrentHashMap.newKeySet();
 
     @Override
-    public void handle(HTTPRequest request, Socket socket) throws Exception {
+    public HTTPResponse handle(HTTPRequest request) throws IOException {
+        throw new IOException("The SSEHandler requires a socket to handle the request.");
+    }
+
+
+    public HTTPResponse handle(HTTPRequest request, Socket socket) throws Exception {
         HTTPResponse response = new HTTPResponse(200, "OK");
         response.setHeader("Content-Type", "text/event-stream");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Connection", "keep-alive");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.send(socket);
+        response.send(request.getSocket());
 
-        sockets.add(socket);
+        sockets.add(request.getSocket());
 
         System.out.println("Client connected. Active connections: " + sockets.size());
-        ServerLogger.getInstance().newLog("Client connected. Active connections: " + sockets.size());
 
-        try {
-            while (!socket.isClosed()) {
-                Thread.sleep(1000);
-                broadcast(String.valueOf(sockets.size()));
+            try {
+                while (!request.getSocket().isClosed()) {
+                    Thread.sleep(Long.MAX_VALUE);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("SSE thread interrupted: " + e.getMessage());
+            } finally {
+                removeSocket(request.getSocket());
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+
+        return response;
 
     }
 
-    public void broadcast(String message) {
-        String formattedMessage = "data: " + message + "\n\n";
+    public void broadcast(SSEEvent event, String message) {
+        String formattedMessage = "event: " + event.name().toLowerCase() + "\n" + "data: " + message + "\n\n";
+        System.out.println(formattedMessage);
         sockets.forEach(socket -> {send(socket, formattedMessage);});
     }
 
@@ -60,9 +69,11 @@ public class ClientCounterHandler extends RequestHandler {
             System.err.println("Error closing socket: " + e.getMessage());
         } finally {
             System.out.println("Client disconnected. Active connections: " + sockets.size());
-
-            ServerLogger.getInstance().newLog("Client disconnected. Active connections: " + sockets.size());
         }
+    }
+
+    public boolean hasClients() {
+        return !sockets.isEmpty();
     }
 
     public int clientCount() {
