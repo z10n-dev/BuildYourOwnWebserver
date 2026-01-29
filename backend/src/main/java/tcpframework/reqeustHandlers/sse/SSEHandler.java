@@ -29,10 +29,12 @@ public class SSEHandler extends RequestHandler {
         sockets.add(request.getSocket());
 
         System.out.println("Client connected. Active connections: " + sockets.size());
+        broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
 
             try {
                 while (!request.getSocket().isClosed()) {
-                    Thread.sleep(Long.MAX_VALUE);
+                    Thread.sleep(1000);
+                    broadcast(SSEEvent.HEARTBEAT, String.valueOf(sockets.size()));
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -47,7 +49,7 @@ public class SSEHandler extends RequestHandler {
 
     public void broadcast(SSEEvent event, String message) {
         String formattedMessage = "event: " + event.name().toLowerCase() + "\n" + "data: " + message + "\n\n";
-        System.out.println(formattedMessage);
+//        System.out.println(formattedMessage);
         sockets.forEach(socket -> {send(socket, formattedMessage);});
     }
 
@@ -69,6 +71,7 @@ public class SSEHandler extends RequestHandler {
             System.err.println("Error closing socket: " + e.getMessage());
         } finally {
             System.out.println("Client disconnected. Active connections: " + sockets.size());
+            broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
         }
     }
 

@@ -22,7 +22,7 @@ export default function page() {
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-screen my-10 mx-10 px-10'>
           <Terminal logs={logs}></Terminal>
-          {/* <ActiveClientsGraph></ActiveClientsGraph> */}
+          <ActiveClientsGraph></ActiveClientsGraph>
         </div>
 
     </div>

@@ -29,9 +29,9 @@ export const SSEProvider = ({ children }: { children: React.ReactNode }) => {
                 setLogs((prev) => [...prev, event.data]);
             });
 
-            sse.addEventListener('stats', (event) => {
-                const data = JSON.parse(event.data);
-                setActiveCount(data.activeClients);
+            sse.addEventListener('connected', (event) => {
+                console.log("Connected clients update:", event.data);
+                setActiveCount(event.data);
             });
     
             return () => {
