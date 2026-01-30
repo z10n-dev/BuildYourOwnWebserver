@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "./components/Button";
 import HTTPSchemaImage from "./http-schema.png";
 import { HoverCard } from "./components/HoverCard";
+import { Stats } from "./components/Stats";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <h1 className="text-5xl font-bold text-gray-900 dark:text-white mt-40 text-center">See the invisible side of HTTP</h1>
       <p className="px-20 text-center text-2xl text-gray-700 dark:text-gray-300 my-10">Most server hide their complexity. Glass Box exposes it. Wath requests flow throuhg parsing, routing, and threading in real-time</p>
       <Button href="/live-dashboard" label="Live Dashboard" target="_self" />
-      <Image src={HTTPSchemaImage} alt="Description"className="my-10 rounded"/>
+      <Stats></Stats>
       <div className="flex flex-col bg-slate-900 size-full items-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mt-20">Why this project?</h2>
         <p className="px-20 text-center text-xl text-gray-700 dark:text-gray-300 my-10">Built strictly with Java Standard Library. No Spring, No Netty, No Magic.</p>
