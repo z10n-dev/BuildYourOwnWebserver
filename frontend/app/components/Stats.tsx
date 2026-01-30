@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { useSSE } from '../hooks/useSSE';
 
@@ -17,14 +19,14 @@ export const Stats = () => {
 
     const statItems = [
         { label: 'CPU Usage', value: `${Math.floor(stats[stats.length - 1]?.cpuUsage * 100)}%`, color: stats[stats.length - 1]?.cpuUsage > 80 ? 'text-red-400' : 'text-emerald-400' },
-        { label: 'Memory', value: `${Math.floor(stats[stats.length - 1]?.memoryUsage)} GiB`, color: 'text-blue-400' },
+        { label: 'Memory', value: `${(stats[stats.length - 1]?.memoryUsage).toFixed(2)} GiB`, color: 'text-blue-400' },
         { label: 'Active Conns', value: stats[stats.length - 1]?.activeConnections.toLocaleString(), color: 'text-purple-400' },
         { label: 'Total Requests', value: stats[stats.length - 1]?.totalRequests.toLocaleString(), color: 'text-amber-400' },
         { label: 'Uptime', value: formatUptime(stats[stats.length - 1]?.uptime), color: 'text-slate-300' },
     ];
 
     return (
-        <div className="w-full p-6 bg-slate-900 rounded-xl shadow-lg border border-slate-800 mb-10">
+        <div className="w-full p-6 bg-slate-900 rounded-xl shadow-lg border border-slate-800 my-10 mx-4 md:mx-20 ">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold text-slate-100 uppercase tracking-wider">Live System Metrics</h3>
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
