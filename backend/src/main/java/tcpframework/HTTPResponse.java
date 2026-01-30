@@ -14,6 +14,7 @@ public class HTTPResponse {
     private String statusMessage;
     private final HashMap<String, String[]> headers = new HashMap<>();
     private byte[] body;
+    private boolean sended = false;
 
     /**
      * Constructs an HTTPResponse object with the specified status code and status message.
@@ -78,6 +79,11 @@ public class HTTPResponse {
             out.write(body);
             out.flush();
         }
+        sended = true;
+    }
+
+    public boolean isSended() {
+        return sended;
     }
 
 

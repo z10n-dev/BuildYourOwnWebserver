@@ -4,6 +4,9 @@ import com.ns.webserver.handlers.*;
 import tcpframework.HTTPHandler;
 import tcpframework.RouterConfig;
 import tcpframework.TCPServer;
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.Loglevel;
+import tcpframework.logger.ServerLogger;
 import tcpframework.reqeustHandlers.sse.SSEHandler;
 
 import java.util.concurrent.ExecutorService;
@@ -25,15 +28,14 @@ public class Main {
         router.register("/api/sse", sseHandler);
 
         HTTPHandler serverHandler = new HTTPHandler(router);
-        ExecutorService executor = Executors.newCachedThreadPool();
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
         ServerLogger.initialize(sseHandler);
-        executor.execute(ServerLogger.getInstance());
 
         try {
             TCPServer server = new TCPServer(Integer.parseInt(args[1]), serverHandler, executor);
             server.start();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Server failed to start: " + e.getMessage(), LogDestination.SERVER);
         }
 
 

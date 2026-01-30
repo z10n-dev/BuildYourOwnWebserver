@@ -1,15 +1,15 @@
 package com.ns.webserver.handlers;
 
 import com.ns.webserver.models.ToDo;
-import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import tcpframework.*;
 import tcpframework.exceptions.NotFoundException;
-import tcpframework.reqeustHandlers.MethodeBasedHandler;
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.ServerLogger;
 import tcpframework.reqeustHandlers.RouteBasedHandler;
+import tcpframework.logger.Loglevel;
 
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -86,8 +86,7 @@ public class ToDoHandler extends RouteBasedHandler {
         ToDo newToDo = new ToDo(UUID.randomUUID(), json.getString("title"), json.getBoolean("completed"));
         toDoStore.put(newToDo.id(), newToDo);
 
-        System.out.println("Added ToDo: " + newToDo.id().toString());
-        ServerLogger.getInstance().newLog("Added ToDo: " + newToDo.id().toString());
+        ServerLogger.getInstance().log(Loglevel.DEBUG, "Current ToDos: " + toDoStore.size(), LogDestination.EVERYWHERE);
 
         HTTPResponse response = new HTTPResponse(201, "Created");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -111,12 +110,11 @@ public class ToDoHandler extends RouteBasedHandler {
         String id = request.getRequestHead().substring(request.getRequestHead().lastIndexOf("/") + 1);
         JSONObject json = new JSONObject(request.getBody());
         ToDo existingToDo = toDoStore.get(UUID.fromString(id));
-        System.out.print(existingToDo);
         if (existingToDo != null) {
             ToDo newToDo = new ToDo(existingToDo.id(), json.getString("title"), json.getBoolean("completed"));
             toDoStore.put(existingToDo.id(), newToDo);
 
-            ServerLogger.getInstance().newLog("Updated ToDo: " + newToDo.id().toString());
+            ServerLogger.getInstance().log(Loglevel.DEBUG, "Updated ToDo: " + newToDo.id().toString(), LogDestination.EVERYWHERE);
 
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -137,7 +135,7 @@ public class ToDoHandler extends RouteBasedHandler {
         ToDo removedToDo = toDoStore.remove(UUID.fromString(id));
         if (removedToDo != null) {
 
-            ServerLogger.getInstance().newLog("Deleted ToDo: " + removedToDo.id().toString());
+            ServerLogger.getInstance().log(Loglevel.DEBUG, "Deleted: " + removedToDo.id().toString(), LogDestination.EVERYWHERE);
 
             HTTPResponse response = new HTTPResponse(200, "OK");
             response.setHeader("Access-Control-Allow-Origin", "*");

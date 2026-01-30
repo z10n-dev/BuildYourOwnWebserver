@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import { logEntry } from '../hooks/useSSE';
 
 interface TerminalProps {
-  logs: string[];
+  logs: logEntry[];
 }
 
 const Terminal: React.FC<TerminalProps> = ({ logs }) => {
@@ -47,7 +48,7 @@ const Terminal: React.FC<TerminalProps> = ({ logs }) => {
           {logs.map((log, index) => (
             <div key={index} className="mb-1">
               <span className="text-blue-400 mr-2">$</span>
-              {log}
+              <span>[{log.logLevel}]</span> {log.timestamp.toLocaleString()} {log.message}
             </div>
           ))}
           

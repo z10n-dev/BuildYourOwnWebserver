@@ -1,5 +1,9 @@
 package tcpframework;
 
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.Loglevel;
+import tcpframework.logger.ServerLogger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
@@ -36,7 +40,7 @@ public class TCPServer extends Thread {
      * Each connection is handled in a separate virtual thread.
      */
     public void run(){
-        System.out.println("TCPServer started on port " + serverSocket.getLocalPort());
+        ServerLogger.getInstance().log(Loglevel.INFO, "TCPServer started on port " + serverSocket.getLocalPort(), LogDestination.SERVER);
         try{
             while(true){
                 var clientSocket = serverSocket.accept();

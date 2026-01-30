@@ -1,6 +1,9 @@
 package tcpframework;
 
-import com.ns.webserver.handlers.ServerLogger;
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.Loglevel;
+import tcpframework.logger.ServerLogger;
+import tcpframework.logger.Stats;
 import tcpframework.reqeustHandlers.RequestHandler;
 
 import java.net.Socket;
@@ -36,7 +39,7 @@ public class HTTPHandler {
                 runTask(socket);
             } catch (Exception e) {
                 System.err.println("Handler Error: " + e.getMessage());
-                ServerLogger.getInstance().newLog(e.getMessage());
+                ServerLogger.getInstance().log(Loglevel.ERROR, e.getMessage(), LogDestination.SERVER);
             }
         });
     }
@@ -50,17 +53,18 @@ public class HTTPHandler {
     protected void runTask(Socket socket) throws Exception {
         try {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
+            Stats.getInstance().incrementRequests();
             if (!request.getPath().contains("_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
-                ServerLogger.getInstance().newLog("REQUEST: " + request.getMethod() + " " + request.getPath());
+                ServerLogger.getInstance().log(Loglevel.DEBUG, request.getRequestHead() + " from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);
             }
 
             RequestHandler handler = router.findHandler(request);
             HTTPResponse response = handler.handle(request, socket);
-            response.send(socket);
+            if(!response.isSended()){
+                response.send(socket);
+            }
         } catch (Exception e) {
             HTTPErrorHandler.handleException(socket, e);
         }
     }
-
-    ;
 }

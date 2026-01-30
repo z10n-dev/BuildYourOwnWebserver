@@ -2,12 +2,17 @@ package tcpframework.reqeustHandlers.sse;
 
 import tcpframework.HTTPRequest;
 import tcpframework.HTTPResponse;
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.Loglevel;
+import tcpframework.logger.ServerLogger;
+import tcpframework.logger.Stats;
 import tcpframework.reqeustHandlers.RequestHandler;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class SSEHandler extends RequestHandler {
     private final Set<Socket> sockets = ConcurrentHashMap.newKeySet();
@@ -28,19 +33,19 @@ public class SSEHandler extends RequestHandler {
 
         sockets.add(request.getSocket());
 
-        System.out.println("Client connected. Active connections: " + sockets.size());
+        ServerLogger.getInstance().log(Loglevel.DEBUG, "SSE Client connected from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);
         broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
+        Stats.getInstance().setActiveConnections(new AtomicLong(sockets.size()));
 
             try {
                 while (!request.getSocket().isClosed()) {
                     Thread.sleep(1000);
                     broadcast(SSEEvent.HEARTBEAT, String.valueOf(sockets.size()));
+                    broadcast(SSEEvent.STATS, Stats.getInstance().getStatsAsJson().toString());
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.err.println("SSE thread interrupted: " + e.getMessage());
-            } finally {
-                removeSocket(request.getSocket());
+                ServerLogger.getInstance().log(Loglevel.ERROR, "SSE thread interrupted: " + e.getMessage(), LogDestination.SERVER);
             }
 
         return response;
@@ -58,22 +63,27 @@ public class SSEHandler extends RequestHandler {
             socket.getOutputStream().write(message.getBytes());
             socket.getOutputStream().flush();
         } catch (IOException e){
-            System.err.println("Error sending data: " + e.getMessage());
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Error sending data to " + socket.getRemoteSocketAddress() + ": " + e.getMessage(), LogDestination.SERVER);
             removeSocket(socket);
         }
     }
 
     private void removeSocket(Socket socket) {
-        sockets.remove(socket);
+        if (!sockets.remove(socket)) {
+            return; // Already removed, prevent duplicate processing
+        }
+
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error closing socket: " + e.getMessage());
-        } finally {
-            System.out.println("Client disconnected. Active connections: " + sockets.size());
-            broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Error closing socket: " + e.getMessage(), LogDestination.SERVER);
         }
+
+        ServerLogger.getInstance().log(Loglevel.DEBUG, "SSE Client disconnected from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);
+        broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
+        Stats.getInstance().setActiveConnections(new AtomicLong(sockets.size()));
     }
+
 
     public boolean hasClients() {
         return !sockets.isEmpty();

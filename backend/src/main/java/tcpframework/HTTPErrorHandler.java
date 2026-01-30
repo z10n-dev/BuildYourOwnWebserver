@@ -1,6 +1,10 @@
 package tcpframework;
 
 import tcpframework.exceptions.*;
+import tcpframework.logger.LogDestination;
+import tcpframework.logger.Loglevel;
+import tcpframework.logger.ServerLogger;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -28,7 +32,7 @@ public class HTTPErrorHandler {
             );
             out.write(response.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            System.err.println("Failed to send error response: " + e.getMessage());
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Failed to send error response: " + e.getMessage(), LogDestination.SERVER);
         }
     }
 
@@ -96,7 +100,6 @@ public class HTTPErrorHandler {
         } else {
             sendInternalError(socket);
         }
-        System.err.println(e.getClass().getSimpleName() + ": " + e.getMessage());
-        e.printStackTrace();
+        ServerLogger.getInstance().log(Loglevel.ERROR, "Exception handled: " + e.getMessage(), LogDestination.SERVER);
     }
 }
