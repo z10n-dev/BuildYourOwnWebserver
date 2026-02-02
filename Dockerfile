@@ -16,4 +16,4 @@ ENV LOG_LEVEL=INFO
 EXPOSE 8080
 
 # Startbefehl
-ENTRYPOINT ["java", "-jar", "app.jar", "/app/static", "8080", "${LOG_LEVEL}"]
+ENTRYPOINT ["java", "-jar", "app.jar", "/app/static 8080 ${LOG_LEVEL}"]
