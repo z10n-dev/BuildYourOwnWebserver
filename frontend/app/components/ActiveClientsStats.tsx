@@ -30,7 +30,7 @@ export default function ActiveClientsGraph() {
     });
   }, [stats]); // This effect triggers every time the server sends a new count
   return (
-    <div className="w-full p-6 bg-slate-900 rounded-xl shadow-sm border border-slate-800" style={{ height: '70vh' }}>
+    <div className="w-full p-6 bg-slate-900 rounded-xl shadow-sm border border-slate-800 h-full" style={{ height: '70vh' }}>
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-slate-300">Live Active Clients (SSE)</h3>
         <span className="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-sm font-medium">

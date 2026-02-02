@@ -39,7 +39,7 @@ public class HTTPHandler {
                 runTask(socket);
             } catch (Exception e) {
                 System.err.println("Handler Error: " + e.getMessage());
-                ServerLogger.getInstance().log(Loglevel.ERROR, e.getMessage(), LogDestination.SERVER);
+                ServerLogger.getInstance().log(Loglevel.ERROR, e.getMessage(), LogDestination.EVERYWHERE);
             }
         });
     }

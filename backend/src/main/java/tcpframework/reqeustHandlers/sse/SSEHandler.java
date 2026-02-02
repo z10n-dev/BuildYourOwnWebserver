@@ -45,7 +45,7 @@ public class SSEHandler extends RequestHandler {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                ServerLogger.getInstance().log(Loglevel.ERROR, "SSE thread interrupted: " + e.getMessage(), LogDestination.SERVER);
+                ServerLogger.getInstance().log(Loglevel.ERROR, "SSE thread interrupted: " + e.getMessage(), LogDestination.EVERYWHERE);
             }
 
         return response;
@@ -63,7 +63,7 @@ public class SSEHandler extends RequestHandler {
             socket.getOutputStream().write(message.getBytes());
             socket.getOutputStream().flush();
         } catch (IOException e){
-            ServerLogger.getInstance().log(Loglevel.ERROR, "Error sending data to " + socket.getRemoteSocketAddress() + ": " + e.getMessage(), LogDestination.SERVER);
+            ServerLogger.getInstance().log(Loglevel.WARN, "Error sending data to " + socket.getRemoteSocketAddress() + ": " + e.getMessage() + " -> close Connection", LogDestination.EVERYWHERE);
             removeSocket(socket);
         }
     }
@@ -76,7 +76,7 @@ public class SSEHandler extends RequestHandler {
         try {
             socket.close();
         } catch (IOException e) {
-            ServerLogger.getInstance().log(Loglevel.ERROR, "Error closing socket: " + e.getMessage(), LogDestination.SERVER);
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Error closing socket: " + e.getMessage(), LogDestination.EVERYWHERE);
         }
 
         ServerLogger.getInstance().log(Loglevel.DEBUG, "SSE Client disconnected from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);

@@ -10,8 +10,10 @@ COPY /backend/target/webserver-1.0-SNAPSHOT.jar app.jar
 # Copy resources separately from your project
 COPY /backend/src/main/resources/static /app/static
 
+ENV LOG_LEVEL=INFO
+
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
 
 # Startbefehl
-ENTRYPOINT ["java", "-jar", "app.jar", "/app/static", "8080"]
+ENTRYPOINT ["java", "-jar", "app.jar", "/app/static", "8080", "${LOG_LEVEL}"]

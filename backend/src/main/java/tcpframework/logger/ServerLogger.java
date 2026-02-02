@@ -9,17 +9,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerLogger implements Runnable {
     private static ServerLogger instance;
-    private SSEHandler sseHandler;
+    private final SSEHandler sseHandler;
+    private final Loglevel loglevel;
     private BlockingQueue<Log> logQueue = new LinkedBlockingQueue<>();
     private volatile boolean running = true;
 
-    private ServerLogger(SSEHandler sseHandler) {
+    private ServerLogger(SSEHandler sseHandler, Loglevel loglevel) {
+        this.loglevel = loglevel;
         this.sseHandler = sseHandler;
     }
 
-    public static void initialize(SSEHandler sseHandler) {
+    public static void initialize(SSEHandler sseHandler, Loglevel loglevel) {
         if (instance == null) {
-            instance = new ServerLogger(sseHandler);
+            instance = new ServerLogger(sseHandler, loglevel);
             Thread.ofVirtual().name("ServerLogger-Thread").start(instance);
         }
     }
@@ -33,7 +35,7 @@ public class ServerLogger implements Runnable {
 
     @Override
     public void run() {
-        log(Loglevel.INFO, "ServerLogger started: " + Thread.currentThread().getName(), LogDestination.SERVER);
+        log(Loglevel.INFO, "ServerLogger started: " + Thread.currentThread().getName(), LogDestination.EVERYWHERE);
 
         while (running) {
             try {
@@ -52,7 +54,9 @@ public class ServerLogger implements Runnable {
 
     private void processLog(Log log) {
         if (log.getDestination() == LogDestination.SERVER || log.getDestination() == LogDestination.EVERYWHERE) {
-            System.out.println("[" + log.getLevel().name() + "] " + log.getMessage());
+            if (log.getLevel().isHigherOrEqual(loglevel)) {
+                System.out.println("[" + log.getLevel().name() + "] " + log.getMessage());
+            }
         }
         if (log.getDestination() == LogDestination.CLIENT || log.getDestination() == LogDestination.EVERYWHERE) {
             sseHandler.broadcast(SSEEvent.LOG, log.toJson().toString());

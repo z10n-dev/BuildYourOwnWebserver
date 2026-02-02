@@ -32,7 +32,7 @@ public class HTTPErrorHandler {
             );
             out.write(response.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            ServerLogger.getInstance().log(Loglevel.ERROR, "Failed to send error response: " + e.getMessage(), LogDestination.SERVER);
+            ServerLogger.getInstance().log(Loglevel.ERROR, "Failed to send error response: " + e.getMessage(), LogDestination.EVERYWHERE);
         }
     }
 
@@ -100,6 +100,6 @@ public class HTTPErrorHandler {
         } else {
             sendInternalError(socket);
         }
-        ServerLogger.getInstance().log(Loglevel.ERROR, "Exception handled: " + e.getMessage(), LogDestination.SERVER);
+        ServerLogger.getInstance().log(Loglevel.ERROR, "Exception handled: " + e.getMessage(), LogDestination.EVERYWHERE);
     }
 }

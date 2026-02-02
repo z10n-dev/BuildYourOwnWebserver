@@ -16,6 +16,7 @@ public class Main {
     public static void main(String[] args) {
         // args[0] = root path
         // args[1] = port number
+        // args[2] = (optional) Log Level
 
         RouterConfig router = new RouterConfig(args[0]);
         router.register("/hello", new HelloWorldHandler());
@@ -29,7 +30,7 @@ public class Main {
 
         HTTPHandler serverHandler = new HTTPHandler(router);
         ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-        ServerLogger.initialize(sseHandler);
+        ServerLogger.initialize(sseHandler, args.length > 2 ? Loglevel.valueOf(args[2].toUpperCase()) : Loglevel.INFO);
 
         try {
             TCPServer server = new TCPServer(Integer.parseInt(args[1]), serverHandler, executor);
