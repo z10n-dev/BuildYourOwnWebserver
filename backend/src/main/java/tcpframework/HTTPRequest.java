@@ -15,7 +15,7 @@ public class HTTPRequest {
     private final String httpVersion;
     private final Map<String, String[]> headers;
     private final byte[] bodyBytes;
-    private final Socket socket;
+    private final String host;
 
     /**
      * Constructs an HTTPRequest object with the specified parameters.
@@ -26,13 +26,13 @@ public class HTTPRequest {
      * @param headers     A map of HTTP headers, where the key is the header name and the value is an array of header values.
      * @param body        The InputStream representing the body of the request.
      */
-    public HTTPRequest(Socket socket, HTTPMethode method, String path, String httpVersion, Map<String, String[]> headers, InputStream body) {
+    public HTTPRequest(HTTPMethode method, String path, String httpVersion, Map<String, String[]> headers, InputStream body, String host) {
         this.method = method;
         this.path = path;
         this.httpVersion = httpVersion;
         this.headers = headers;
         this.bodyBytes = readBody(body);
-        this.socket = socket;
+        this.host = host;
     }
 
     /**
@@ -86,11 +86,16 @@ public class HTTPRequest {
         return method + " " + path;
     }
 
-    public Socket getSocket() {
-        return socket;
+
+    public String getHost() {
+        int colonIndex = host.indexOf(':');
+        if (colonIndex != -1){
+            return host.substring(0, colonIndex);
+        }
+        return host;
     }
 
-    /**
+    /*
      * Returns a string representation of the HTTP request, including the method, path, version, headers, and body.
      *
      * @return A string representation of the HTTP request.

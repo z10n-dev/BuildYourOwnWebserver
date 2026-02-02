@@ -13,15 +13,15 @@ import java.util.concurrent.ExecutorService;
  * Handles incoming HTTP connections and delegates tasks to appropriate handlers.
  */
 public class HTTPHandler {
-    private final RouterConfig router;
+    private final VirtualHostManager vManager;
 
     /**
      * Constructs an HTTPHandler with the specified router configuration.
      *
-     * @param router The router configuration used to find request handlers.
+     * @param vManager The VirtualHostManager managing virtual hosts.
      */
-    public HTTPHandler(RouterConfig router) {
-        this.router = router;
+    public HTTPHandler(VirtualHostManager vManager) {
+        this.vManager = vManager;
     }
 
     /**
@@ -55,9 +55,12 @@ public class HTTPHandler {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
             Stats.getInstance().incrementRequests();
             if (!request.getPath().contains("_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
-                ServerLogger.getInstance().log(Loglevel.DEBUG, request.getRequestHead() + " from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);
+                ServerLogger.getInstance().log(Loglevel.DEBUG, request.getRequestHead() + " from " + socket.getRemoteSocketAddress() + "\n" + request.getHost(), LogDestination.EVERYWHERE);
             }
 
+            VirtualHostConfig vhost = vManager.getVirtualHost(request.getHost());
+
+            RouterConfig router = vhost.getRouter();
             RequestHandler handler = router.findHandler(request);
             HTTPResponse response = handler.handle(request, socket);
             if(!response.isSended()){

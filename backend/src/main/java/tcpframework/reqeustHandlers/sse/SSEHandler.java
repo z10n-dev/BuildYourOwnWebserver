@@ -29,16 +29,16 @@ public class SSEHandler extends RequestHandler {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Connection", "keep-alive");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.send(request.getSocket());
+        response.send(socket);
 
-        sockets.add(request.getSocket());
+        sockets.add(socket);
 
         ServerLogger.getInstance().log(Loglevel.DEBUG, "SSE Client connected from " + socket.getRemoteSocketAddress(), LogDestination.EVERYWHERE);
         broadcast(SSEEvent.CONNECTED, String.valueOf(sockets.size()));
         Stats.getInstance().setActiveConnections(new AtomicLong(sockets.size()));
 
             try {
-                while (!request.getSocket().isClosed()) {
+                while (!socket.isClosed()) {
                     Thread.sleep(1000);
                     broadcast(SSEEvent.HEARTBEAT, String.valueOf(sockets.size()));
                     broadcast(SSEEvent.STATS, Stats.getInstance().getStatsAsJson().toString());

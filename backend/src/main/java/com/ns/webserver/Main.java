@@ -1,9 +1,7 @@
 package com.ns.webserver;
 
 import com.ns.webserver.handlers.*;
-import tcpframework.HTTPHandler;
-import tcpframework.RouterConfig;
-import tcpframework.TCPServer;
+import tcpframework.*;
 import tcpframework.logger.LogDestination;
 import tcpframework.logger.Loglevel;
 import tcpframework.logger.ServerLogger;
@@ -18,17 +16,24 @@ public class Main {
         // args[1] = port number
         // args[2] = (optional) Log Level
 
-        RouterConfig router = new RouterConfig(args[0]);
-        router.register("/hello", new HelloWorldHandler());
+        VirtualHostConfig defaultVHost = new VirtualHostConfig("default", "static");
+        VirtualHostManager vhost = new VirtualHostManager(defaultVHost);
+
+        VirtualHostConfig domain1 = new VirtualHostConfig("a.localhost", "static");
+        domain1.getRouter().register("/hello", new HelloWorldHandler());
+        vhost.registerVirtualHost(domain1);
+
+        VirtualHostConfig domain2 = new VirtualHostConfig("localhost", args[0]);
         ToDoHandler toDoHandler = new ToDoHandler();
         SSEHandler sseHandler = new SSEHandler();
+        vhost.registerVirtualHost(domain2);
 
         // TODO: Make sub-path registrations in the same way as other handlers
-        router.register("/api/todos", toDoHandler);
-        router.register("/api/todos/*", toDoHandler);
-        router.register("/api/sse", sseHandler);
+        domain2.getRouter().register("/api/todos", toDoHandler);
+        domain2.getRouter().register("/api/todos/*", toDoHandler);
+        domain2.getRouter().register("/api/sse", sseHandler);
 
-        HTTPHandler serverHandler = new HTTPHandler(router);
+        HTTPHandler serverHandler = new HTTPHandler(vhost);
         ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
         ServerLogger.initialize(sseHandler, args.length > 2 ? Loglevel.valueOf(args[2].toUpperCase()) : Loglevel.INFO);
 

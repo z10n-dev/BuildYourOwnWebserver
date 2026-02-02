@@ -26,7 +26,7 @@ public class HTTPRequestParser {
 
         LinkedHashMap<String, String[]> headers = extractHttpHeaders(in);
 
-        return new HTTPRequest(socket, methode, path, httpVersion, headers, bodyStream(rawIn, Integer.parseInt(headers.getOrDefault("content-length", new String[]{"0"})[0])));
+        return new HTTPRequest(methode, path, httpVersion, headers, bodyStream(rawIn, Integer.parseInt(headers.getOrDefault("content-length", new String[]{"0"})[0])), headers.containsKey("host") ? headers.get("host")[0] : "404");
     }
 
     private static String getHTTPHeader(InputStream in) throws IOException {

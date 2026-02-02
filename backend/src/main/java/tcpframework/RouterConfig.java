@@ -51,7 +51,7 @@ public class RouterConfig {
         }
 
         for (String pattern : routes.keySet()) {
-            if (mathPattern(path, pattern)) {
+            if (matchPattern(path, pattern)) {
                 return routes.get(pattern);
             }
         }
@@ -66,7 +66,7 @@ public class RouterConfig {
      * @param pattern The pattern to match against.
      * @return True if the path matches the pattern, false otherwise.
      */
-    private boolean mathPattern(String path, String pattern) {
+    private boolean matchPattern(String path, String pattern) {
         return path.matches(pattern.replace("*", ".*"));
     }
 }
