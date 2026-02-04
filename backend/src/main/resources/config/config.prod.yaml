@@ -5,13 +5,13 @@ defaultHost: ipro.programmierwelt.ch
 
 hosts:
   ipro.programmierwelt.ch:
-    documentRoot: "app/www"
+    documentRoot: "app/www/"
     routes:
       /hello: HelloWorldHandler
       /api/todos/*: ToDoHandler
       /api/sse: SSEHandler
 
   test.ipro.programmierwelt.ch:
-    documentRoot: "app/www"
+    documentRoot: "app/www/"
     routes:
       /: HelloWorldHandler

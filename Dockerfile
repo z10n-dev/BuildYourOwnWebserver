@@ -7,14 +7,27 @@ WORKDIR /app
 # Kopiere dein kompiliertes Jar (Name anpassen!)
 COPY /backend/target/webserver-1.0-SNAPSHOT.jar app.jar
 
-# Copy resources separately from your project
-COPY /backend/src/main/resources/static /app/www
+# Copy resources to a temporary location
+COPY /backend/src/main/resources/static /app/www-default
+COPY /backend/src/main/resources/config /app/config-default
 
-COPY /backend/src/main/resources/config /app/config
+# Create empty directories for volumes
+RUN mkdir -p /app/www /app/config
 
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
 
-# Startbefehl
-# Use shell form to enable variable expansion
-ENTRYPOINT java -jar app.jar prod
+# Create entrypoint script that copies defaults if directories are empty
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'if [ -z "$(ls -A /app/config)" ]; then' >> /entrypoint.sh && \
+    echo '  echo "Config directory empty, copying defaults..."' >> /entrypoint.sh && \
+    echo '  cp -r /app/config-default/* /app/config/' >> /entrypoint.sh && \
+    echo 'fi' >> /entrypoint.sh && \
+    echo 'if [ -z "$(ls -A /app/www)" ]; then' >> /entrypoint.sh && \
+    echo '  echo "WWW directory empty, copying defaults..."' >> /entrypoint.sh && \
+    echo '  cp -r /app/www-default/* /app/www/' >> /entrypoint.sh && \
+    echo 'fi' >> /entrypoint.sh && \
+    echo 'exec java -jar app.jar prod' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
