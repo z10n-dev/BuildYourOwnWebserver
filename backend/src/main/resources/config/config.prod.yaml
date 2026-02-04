@@ -5,7 +5,7 @@ defaultHost: ipro.programmierwelt.ch
 
 hosts:
   ipro.programmierwelt.ch:
-    documentRoot: "app/www/glassbox"
+    documentRoot: "app/www"
     routes:
       /hello: HelloWorldHandler
       /api/todos/*: ToDoHandler
