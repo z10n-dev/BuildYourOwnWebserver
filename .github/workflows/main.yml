@@ -42,9 +42,9 @@ jobs:
 
       - name: Static Files nach Java Resources kopieren
         run: |
-          mkdir -p backend/src/main/resources/static
-          rm -rf backend/src/main/resources/static/*
-          cp -r frontend/out/* backend/src/main/resources/static/
+          mkdir -p backend/src/main/resources/static/glassbox
+          rm -rf backend/src/main/resources/static/glassbox/*
+          cp -r frontend/out/* backend/src/main/resources/static/glassbox/
       
 
       - name: Repository-Namen in Kleinbuchstaben umwandeln

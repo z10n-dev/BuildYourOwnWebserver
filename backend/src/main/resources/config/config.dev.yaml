@@ -1,0 +1,17 @@
+environment: dev
+port: 8080
+logLevel: DEBUG
+defaultHost: localhost
+
+hosts:
+  localhost:
+    documentRoot: "frontend/out"
+    routes:
+      /hello: HelloWorldHandler
+      /api/todos/*: ToDoHandler
+      /api/sse: SSEHandler
+
+  a.localhost:
+    documentRoot: "static/example"
+    routes:
+      /: HelloWorldHandler

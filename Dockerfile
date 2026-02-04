@@ -8,13 +8,13 @@ WORKDIR /app
 COPY /backend/target/webserver-1.0-SNAPSHOT.jar app.jar
 
 # Copy resources separately from your project
-COPY /backend/src/main/resources/static /app/static
+COPY /backend/src/main/resources/static /app/www
 
-ENV LOG_LEVEL=INFO
+COPY /backend/src/main/resources/config /app/config
 
 # Port freigeben (z.B. 8080)
 EXPOSE 8080
 
 # Startbefehl
 # Use shell form to enable variable expansion
-ENTRYPOINT java -jar app.jar /app/static 8080 ${LOG_LEVEL}
+ENTRYPOINT java -jar app.jar prod

@@ -1,0 +1,17 @@
+environment: prod
+port: 8080
+logLevel: INFO
+defaultHost: ipro.programmierwelt.ch
+
+hosts:
+  ipro.programmierwelt.ch:
+    documentRoot: "app/www/glassbox"
+    routes:
+      /hello: HelloWorldHandler
+      /api/todos/*: ToDoHandler
+      /api/sse: SSEHandler
+
+  test.ipro.programmierwelt.ch:
+    documentRoot: "app/www"
+    routes:
+      /: HelloWorldHandler

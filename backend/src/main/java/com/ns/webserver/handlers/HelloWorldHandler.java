@@ -1,9 +1,9 @@
 package com.ns.webserver.handlers;
 
-import tcpframework.*;
-import tcpframework.reqeustHandlers.MethodeBasedHandler;
+import com.ns.tcpframework.HTTPRequest;
+import com.ns.tcpframework.HTTPResponse;
+import com.ns.tcpframework.reqeustHandlers.MethodeBasedHandler;
 
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class HelloWorldHandler extends MethodeBasedHandler {
