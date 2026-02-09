@@ -22,10 +22,10 @@ public class ConfigLoader {
         InputStream in;
 
         if (externalConfig.exists()) {
-            ServerLogger.getInstance().log(Loglevel.INFO, "Loading configuration from external file: " + configPath, LogDestination.EVERYWHERE);
+//            ServerLogger.getInstance().log(Loglevel.INFO, "Loading configuration from external file: " + configPath, LogDestination.EVERYWHERE);
             in = new java.io.FileInputStream(externalConfig);
         } else {
-            ServerLogger.getInstance().log(Loglevel.INFO, "External config not found, loading from classpath: " + configPath, LogDestination.EVERYWHERE);
+//            ServerLogger.getInstance().log(Loglevel.INFO, "External config not found, loading from classpath: " + configPath, LogDestination.EVERYWHERE);
             in = ConfigLoader.class.getClassLoader().getResourceAsStream(configPath);
             if (in == null) {
                 throw new IllegalArgumentException("Config file not found! " + configPath);
