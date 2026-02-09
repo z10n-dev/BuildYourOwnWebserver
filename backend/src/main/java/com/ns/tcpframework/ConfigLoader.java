@@ -2,8 +2,11 @@ package com.ns.tcpframework;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.ns.tcpframework.logger.LogDestination;
 import com.ns.tcpframework.logger.Loglevel;
+import com.ns.tcpframework.logger.ServerLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -13,21 +16,32 @@ public class ConfigLoader {
     private static final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     public static ServerConfig load(String environment) throws IOException {
-        try (InputStream in = ConfigLoader.class.getClassLoader().getResourceAsStream("config/config."+environment+".yaml")){
-            if (in == null){
-                throw new IllegalArgumentException("Config file not found! " + "config."+environment+".yaml");
-            }
 
+        String configPath = "config/config." + environment + ".yaml";
+        java.io.File externalConfig = new File(configPath);
+        InputStream in;
+
+        if (externalConfig.exists()) {
+            ServerLogger.getInstance().log(Loglevel.INFO, "Loading configuration from external file: " + configPath, LogDestination.EVERYWHERE);
+            in = new java.io.FileInputStream(externalConfig);
+        } else {
+            ServerLogger.getInstance().log(Loglevel.INFO, "External config not found, loading from classpath: " + configPath, LogDestination.EVERYWHERE);
+            in = ConfigLoader.class.getClassLoader().getResourceAsStream(configPath);
+            if (in == null) {
+                throw new IllegalArgumentException("Config file not found! " + configPath);
+            }
+        }
+
+        try (in) {
             ConfigData data = mapper.readValue(in, ConfigData.class);
 
             Map<String, VirtualHostConfig> hosts = buildHosts(data.hosts);
-
 
             return new ServerConfig(
                     data.environment,
                     data.port,
                     Loglevel.valueOf(data.logLevel.toUpperCase()),
-                    hosts.getOrDefault(data.defaultHost,hosts.values().stream().findFirst().orElse(null) ),
+                    hosts.getOrDefault(data.defaultHost, hosts.values().stream().findFirst().orElse(null)),
                     hosts
             );
         }
