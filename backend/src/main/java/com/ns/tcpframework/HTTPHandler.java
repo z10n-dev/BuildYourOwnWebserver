@@ -55,7 +55,7 @@ public class HTTPHandler {
             HTTPRequest request = HTTPRequestParser.parseHTTPRequest(socket);
             Stats.getInstance().incrementRequests();
             if (!request.getPath().contains("_next") && !request.getMethod().equals(HTTPMethode.HEAD) && !request.getPath().startsWith("/api/active-clients")) {
-                ServerLogger.getInstance().log(Loglevel.DEBUG, request.getRequestHead() + " from " + socket.getRemoteSocketAddress() + "\n" + request.getHost(), LogDestination.EVERYWHERE);
+                ServerLogger.getInstance().log(Loglevel.DEBUG, request.getRequestHead() + " from " + socket.getRemoteSocketAddress()  + request.getHost(), LogDestination.EVERYWHERE);
             }
 
             VirtualHostConfig vhost = vManager.getVirtualHost(request.getHost());

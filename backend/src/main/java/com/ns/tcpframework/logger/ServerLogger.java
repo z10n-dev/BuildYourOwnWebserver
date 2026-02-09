@@ -8,8 +8,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ServerLogger implements Runnable {
     private static ServerLogger instance;
-    private final SSEHandler sseHandler;
-    private final Loglevel loglevel;
+    private SSEHandler sseHandler;
+    private Loglevel loglevel;
     private BlockingQueue<Log> logQueue = new LinkedBlockingQueue<>();
     private volatile boolean running = true;
 
@@ -30,6 +30,15 @@ public class ServerLogger implements Runnable {
             throw new IllegalStateException("ServerLogger not initialized");
         }
         return instance;
+    }
+
+    public void setSseHandler(SSEHandler sseHandler) {
+        // This method can be used to set the SSEHandler after initialization if needed
+        this.sseHandler = sseHandler;
+    }
+
+    public void setLogLevel(Loglevel loglevel) {
+        this.loglevel = loglevel;
     }
 
     @Override
