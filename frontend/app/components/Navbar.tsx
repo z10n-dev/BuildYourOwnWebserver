@@ -22,9 +22,6 @@ export default function Navbar() {
             <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-              Architecture
-            </Link>
             <Link href="/todo" className='text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition'>Todo</Link>
             <Link href="/live-dashboard" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
               Dashboard
@@ -57,9 +54,6 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link href="/" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
               Home
-            </Link>
-            <Link href="/about" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
-              About
             </Link>
             <Link href="/todo" className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
               Todo
