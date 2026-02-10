@@ -50,6 +50,6 @@ BuildYourOwnWebserver/
 ## Next Steps
 
 - **[Getting Started](./getting-started.md)** — Install, build, and run the server
-- **[Configuration](./configuration/)** — Configure ports, hosts, routes, and handlers
-- **[Architecture](./architecture/)** — Deep dive into the system design
-- **[API Reference](./api/)** — Endpoint documentation for the REST and SSE APIs
+- **[Configuration](./configuration/Server%20Configuration.md)** — Configure ports, hosts, routes, and handlers
+- **[Architecture](./architecture/overview.md)** — Deep dive into the system design
+- **[API Reference](./api/error-handling.md)** — Endpoint documentation for the REST and SSE APIs
