@@ -40,11 +40,22 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
+      - name: Docusaurus Dependencies installieren
+        working-directory: ./docs
+        run: npm ci
+
+      - name: Docusaurus Static Website generieren
+        working-directory: ./docs
+        run: npm run build
+
       - name: Static Files nach Java Resources kopieren
         run: |
           mkdir -p backend/src/main/resources/static/glassbox
           rm -rf backend/src/main/resources/static/glassbox/*
           cp -r frontend/out/* backend/src/main/resources/static/glassbox/
+          mkdir -p backend/src/main/resources/static/docs
+          rm -rf backend/src/main/resources/static/docs/*
+          cp -r docs/build/* backend/src/main/resources/static/docs/
       
 
       - name: Repository-Namen in Kleinbuchstaben umwandeln

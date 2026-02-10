@@ -15,3 +15,8 @@ hosts:
     documentRoot: "/app/www/"
     routes:
       /: HelloWorldHandler
+
+  docs.ipro.programmierwelt.ch:
+    documentRoot: "/app/www/docs"
+    routes:
+      /: StaticFileHandler

@@ -15,3 +15,8 @@ hosts:
     documentRoot: "static/example"
     routes:
       /: HelloWorldHandler
+
+  docs.localhost:
+    documentRoot: "docs/build"
+    routes:
+      /hello: HelloWorldHandler
