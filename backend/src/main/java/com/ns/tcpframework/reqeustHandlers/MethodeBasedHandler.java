@@ -36,6 +36,7 @@ public class MethodeBasedHandler extends RequestHandler {
      *
      * @param request The HTTP request to handle.
      * @throws Exception If the method is not implemented or an error occurs.
+     * @return An HTTPResponse object containing the status code, headers, and body to send to the client.
      */
     protected HTTPResponse handleGetRequest(HTTPRequest request) throws Exception{
         throw new NotImplementedException("GET method not implemented for this handler");
@@ -47,6 +48,7 @@ public class MethodeBasedHandler extends RequestHandler {
      *
      * @param request The HTTP request to handle.
      * @throws Exception If the method is not implemented or an error occurs.
+     * @return An HTTPResponse object containing the status code, headers, and body to send to the client.
      */
     protected HTTPResponse handlePostRequest(HTTPRequest request) throws Exception{
         throw new NotImplementedException("POST method not implemented for this handler");
@@ -58,6 +60,7 @@ public class MethodeBasedHandler extends RequestHandler {
      *
      * @param request The HTTP request to handle.
      * @throws Exception If the method is not implemented or an error occurs.
+     * @return An HTTPResponse object containing the status code, headers, and body to send to the client.
      */
     protected HTTPResponse handlePutRequest(HTTPRequest request) throws Exception {
         throw new NotImplementedException("PUT method not implemented for this handler");
@@ -69,11 +72,20 @@ public class MethodeBasedHandler extends RequestHandler {
      *
      * @param request The HTTP request to handle.
      * @throws Exception If the method is not implemented or an error occurs.
+     * @return An HTTPResponse object containing the status code, headers, and body to send to the client.
      */
     protected HTTPResponse handleDeleteRequest(HTTPRequest request) throws Exception {
         throw new NotImplementedException("DELETE method not implemented for this handler");
     };
 
+    /**
+     * Handles HTTP HEAD requests.
+     * Subclasses should override this method to provide specific HEAD request handling logic.
+     *
+     * @param request The HTTP request to handle.
+     * @throws Exception If the method is not implemented or an error occurs.
+     * @return An HTTPResponse object containing the status code and headers to send to the client (no body).
+     */
     protected HTTPResponse handleHeadRequest(HTTPRequest request) throws Exception {
         throw new NotImplementedException("HEAD method not implemented for this handler");
     }

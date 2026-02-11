@@ -20,3 +20,8 @@ hosts:
     documentRoot: "docs/build"
     routes:
       /hello: HelloWorldHandler
+
+  javadoc.localhost:
+    documentRoot: "backend/src/main/resources/javadoc"
+    routes:
+      /hello: HelloWorldHandler
